@@ -1,22 +1,10 @@
-#include "catalog.h"
 #include <iostream>
 #include <cstdio>
 #include <cassert>
-
+#include "catalog.h"
+#include "my_string.h"
+//#define DEBUG
 using namespace std;
-
-int read_string(FILE* p) {
-    int count = 0;
-    FILE* fp = p;
-    char ch;
-    while ((ch = fgetc(fp)) != '"') {
-        cout << ch;
-        ++count;
-    }
-    cout << endl;
-    return count;
-}
-
 
 int main(int argc, char *argv[]) {
     catalog log;
@@ -24,25 +12,28 @@ int main(int argc, char *argv[]) {
     fp = fopen("input.json", "r");
     assert(fp != NULL);
 
-
-    char a;
-    a = fgetc(fp);  // [
-    a = fgetc(fp);  // /n
-    a = fgetc(fp); // {
-    a = fgetc(fp); // "
-    int count;
+    char ch;
 //    fseek(fp, -1, SEEK_CUR);
-    count = read_string(fp);
-    cout << count << endl;
-    a = fgetc(fp);
-    a = fgetc(fp);
-    a = fgetc(fp);
-    a = fgetc(fp);
-    a = fgetc(fp);
-    cout << a << endl;
+//    char* str = read_string(fp);
 
-
+    int k = 25;
+    // extra data
+    while (k--) {
+        ch = fgetc(fp);
+        if ('"' == ch) {
+            read_text(fp);
+        } else if (ch >= '0' && ch <= '9') {
+            read_int(fp);
+        } else if ('f' == ch || 't' == ch) {
+            read_bool(fp);
+        } else if ('[' == ch) {
+            read_nested_arr(fp);
+        } else if ('{' == ch) {
+            read_nested_obj(fp);
+        }
+    }
 
     fclose(fp);
     return 0;
 }
+

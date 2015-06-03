@@ -10,8 +10,6 @@ main()加载后初始化一个空的catalog。
 
 3. find(A, B) : 先到catalog中查询A的id，然后到serializer中查询**所有含此id A和同样value B的元组**，把此元组解析为JSON格式，输出。
 
-
-
 ---
 
 ### JSON数据解析过程 ###
@@ -60,6 +58,6 @@ SERIALIZER format：
 
 3. 分隔符上面暂时用的‘\0’, 具体实现我会用一个名为delimiter的字符变量来表示。
 
-4. bool变量在数据中用T或者F两个字符变量来表示。
+4. bool变量在数据中用'T'或者'F'两个字符变量来表示。
 
 
