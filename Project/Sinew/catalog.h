@@ -17,11 +17,11 @@ public:
     // deconstructor
     ~catalog(void);
     // "check catalog" instruction implementation
-    void show(void);
+    void print(void);
     // "find A=B" instruction implementation
     void find(char* key_name, void* key_value);
     // add a tuple into the cataglog
-    void insert_tuple(char* key_type, char* key_name, void* key_value);
+    void insert_tuple(char* key_type, char* key_name);
     // search wheterh this key is already indexed, if it is, return pointer to this attribute;otherwise, return NULL;
     attribute* search(char* key_type, char* key_name);
 

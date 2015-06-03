@@ -1,10 +1,10 @@
 #include "catalog.h"
 #include <iostream>
 #include <iomanip>
+#include <cstring>
 
 using namespace std;
 const int padding = 20;
-
 
 catalog::catalog(void) {
     head = new attribute;
@@ -29,7 +29,7 @@ catalog::~catalog(void) {
     delete tail;
 }
 
-void catalog::show(void) {
+void catalog::print(void) {
     // heading
     cout << setfill(' ') << left
          << setw(padding) << "_id"
@@ -55,8 +55,21 @@ void catalog::find(char* key_name, void* key_value) {
     return;
 }
 
-void catalog::insert_tuple(char* key_type, char* key_name, void* key_value) {
-    if (search(key_type, key_name) != 0)
+void catalog::insert_tuple(char* key_type, char* key_name) {
+    attribute *p = search(key_type, key_name);
+    if (p != NULL) {
+        ++p->count;
+    } else {
+        p = new attribute;
+        p->_id = ++count;
+        strcpy(p->key_type, key_type);
+        strcpy(p->key_name, key_name);
+        p->count = 1;
+        p->pre = tail->pre;
+        p->next = tail;
+        tail->pre->next = p;
+        tail->pre = p;
+    }
     return;
 }
 
@@ -65,7 +78,6 @@ attribute* catalog::search(char* key_type, char* key_name) {
     for (int i = 0; i < count; i++) {
         if (!strcmp(key_name, cur->key_name) && !strcmp(key_type, cur->key_type)) {
             return cur;
-            break;
         }
     }
     return NULL;
