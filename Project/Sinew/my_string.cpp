@@ -2,8 +2,9 @@
 #define DEBUG
 using namespace std;
 
-const char delimeter = ' ';
+const char delimeter = '-';
 
+// return a string with a delimeter
 char* read_text(FILE* fp) {
     int count = 0;
     char ch;
@@ -11,7 +12,7 @@ char* read_text(FILE* fp) {
         ++count;
     }
     fseek(fp, -(count + 1), SEEK_CUR);
-    char* str = new char[count + 1];
+    char *str = (char*)malloc(sizeof(count + 1));
     fread(str, count, 1, fp);
     ch = fgetc(fp);
     str[count] = '\0';
@@ -65,9 +66,39 @@ bool read_bool(FILE* fp) {
 }
 
 char* read_nested_arr(FILE* fp) {
+    int count = 0;
+    char ch;
+    char *s = NULL;
+    char *s_next;
+    while ((ch = fgetc(fp)) != ']') {
+        if ('"' == ch) {
+            s_next = read_text(fp);
+            if (s != NULL) {
+                join(s, s_next);
+            } else {
+                s = (char*)malloc(sizeof(strlen(s_next)));
+                strncpy(s, s_next, sizeof(s));
+            }
+        }
+    }
+#ifdef DEBUG
+    cout << "Read a nested_arr" << endl;
+    cout << s << endl;
+    cout << endl;
+#endif // MACRO
+    return s;
+}
+
+
+void read_tuple(FILE *fp, tuple* t) {
 
 }
 
-void read_nested_obj(FILE *fp) {
+void join(char* s, char* s_next) {
+    int length = strlen(s);
+    cout << "join " << s << " and " << s_next << endl;
+    s = (char*)realloc(s, strlen(s) + strlen(s_next) + 1);
+    s[length] = delimeter;
+    strncpy(s + length + 1, s_next, sizeof(s));
 
 }

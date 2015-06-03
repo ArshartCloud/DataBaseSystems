@@ -2,13 +2,14 @@
 #include <iostream>
 #include <iomanip>
 #include <cstring>
+#include <cstdlib>
 
 using namespace std;
 const int padding = 20;
 
 catalog::catalog(void) {
-    head = new attribute;
-    tail = new attribute;
+    head = (attribute*)malloc(sizeof(attribute));
+    tail = (attribute*)malloc(sizeof(attribute));
     head->pre = NULL;
     head->next = tail;
     tail->pre = head;
@@ -60,7 +61,7 @@ void catalog::insert_tuple(char* key_type, char* key_name) {
     if (p != NULL) {
         ++p->count;
     } else {
-        p = new attribute;
+        p = (attribute*)malloc(sizeof(attribute));
         p->_id = ++count;
         strcpy(p->key_type, key_type);
         strcpy(p->key_name, key_name);
