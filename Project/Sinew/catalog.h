@@ -18,7 +18,7 @@ public:
     ~catalog(void);
     // show that catalog information
     void print(void);
-    // "find A=B" 
+    // "find A=B"
     void find(char* key_name, void* key_value);
     // add a tuple into the cataglog
     void insert_tuple(char* key_type, char* key_name);

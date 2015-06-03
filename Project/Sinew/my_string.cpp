@@ -1,10 +1,11 @@
 #include "my_string.h"
+
 #define DEBUG
 using namespace std;
 
 const char delimeter = '-';
 
-// return a string with a delimeter
+// return a string with a delimeter '/0'
 char* read_text(FILE* fp) {
     int count = 0;
     char ch;
@@ -14,11 +15,10 @@ char* read_text(FILE* fp) {
     fseek(fp, -(count + 1), SEEK_CUR);
     char *str = (char*)malloc(sizeof(count + 1));
     fread(str, count, 1, fp);
-    ch = fgetc(fp);
+    ch = fgetc(fp); // "
     str[count] = '\0';
 #ifdef DEBUG
     cout << "Read a text" << endl;
-    cout << "length = " << strlen(str) << endl;
     cout << "str = " << str << endl;
     cout << endl;
 #endif // DEBUG
@@ -73,12 +73,13 @@ char* read_nested_arr(FILE* fp) {
     while ((ch = fgetc(fp)) != ']') {
         if ('"' == ch) {
             s_next = read_text(fp);
-            if (s != NULL) {
-                join(s, s_next);
-            } else {
-                s = (char*)malloc(sizeof(strlen(s_next)));
-                strncpy(s, s_next, sizeof(s));
-            }
+            // if (s != NULL) {
+            //     join_str(s, s_next, strlen(s_next));
+            // } else {
+            //     s = (char*)malloc((strlen(s_next)));
+            //     strncpy(s, s_next, sizeof(s));
+            // }
+            join_str(s, s_next, strlen(s_next));
         }
     }
 #ifdef DEBUG
@@ -89,16 +90,31 @@ char* read_nested_arr(FILE* fp) {
     return s;
 }
 
-
 void read_tuple(FILE *fp, tuple* t) {
 
 }
 
-void join(char* s, char* s_next) {
-    int length = strlen(s);
-    cout << "join " << s << " and " << s_next << endl;
-    s = (char*)realloc(s, strlen(s) + strlen(s_next) + 1);
-    s[length] = delimeter;
-    strncpy(s + length + 1, s_next, sizeof(s));
-
+void join_str(char* s, char* s_next, int count) {
+    if (NULL == s) {
+        s = (char*)malloc(count + 1);
+        strncpy(s, s_next, count);
+        s[count] = '/0';
+    } else {
+        int length = strlen(s);
+        s = (char*)realloc(s, length + count + 1);
+        strncpy(s + length, s_next, count);
+        s[length + count] = '/0';
+    }
 }
+
+void join_int(int* k, int num, int ele) {
+    if (NULL == k) {
+        k = (int*)malloc(sizeof(int));
+    } else {
+        k = (int*)realloc(k, sizeof(int) * (num + 1));
+        k += num;
+    }
+    *k = ele;
+}
+
+

@@ -22,12 +22,12 @@ catalog::~catalog(void) {
     for (int i = 0; i < count; i++) {
         last = tail->pre;
         tail->pre = tail->pre->pre;
-        delete last->key_name;
-        delete last->key_type;
-        delete last;
+        free (last->key_name);
+        free (last->key_type);
+        free (last);
     }
-    delete head;
-    delete tail;
+    free (head);
+    free (tail);
 }
 
 void catalog::print(void) {
