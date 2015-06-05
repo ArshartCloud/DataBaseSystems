@@ -7,6 +7,7 @@ void initial(tuple* t) {
     t->len = 0;
     t->data = "";
     t->child_num = 0;
+    return;
 }
 
 void add_int(tuple* t, int id, int key_value) {
@@ -19,8 +20,8 @@ void add_int(tuple* t, int id, int key_value) {
     t->len += size;
     // tranform a integer into string
     char *s = new char[size + 1];
-    strncpy(s, (char*)&id, size);
     s[size] = '\0';
+    strncpy(s, (char*)&id, size);
     t->data = t->data + s;
 
     delete[] s;
@@ -56,19 +57,25 @@ void add_bool(tuple* t, int id, bool key_value) {
 
 void add_nested_arr(tuple *t, int id, my_string key_value) {
     add_text(t, id, key_value);
+    return;
 }
 
-void add_nested_obj(tuple* t, int id, tuple nested) {
-    assert(t != NULL);
-
+void add_nested_obj(tuple* t, int id, tuple* nested) {
+    tuple child;
     ++t->key_num;
     t->aid.add(id);
     t->offset.add(t->len);
     t->len += 0;
-    t->child.add(nested);
+//    t->child.add(child);
     ++t->child_num;
+    return;
 }
 
 void sort_id(tuple* t) {
+    return;
+}
 
+void foo(tuple *t, int id, tuple* k) {
+
+    return;
 }

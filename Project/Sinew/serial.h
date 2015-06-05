@@ -1,7 +1,7 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 
-#include "my_vector.hpp"
+#include "my_vector.cpp"
 #include "my_string.h"
 #include <cassert>
 
@@ -26,8 +26,10 @@ void add_bool(tuple* t, int id, bool key_value);
 // add a nested_arr key into a tuple
 void add_nested_arr(tuple *t, int id, my_string key_value);
 // add a nested_obj key into a tuple
-void add_nested_obj(tuple* t, int id, tuple nested);
+void add_nested_obj(tuple* t, int id, tuple* nested);
 // sort the key with aid using binary search
 void sort_id(tuple* t);
+
+void foo(tuple *t, int id, tuple* nested);
 
 #endif /* SERIAL_H */

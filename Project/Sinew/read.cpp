@@ -11,13 +11,13 @@ my_string read_text(FILE* fp) {
     while ((ch = fgetc(fp)) != '"') {
         ++count;
     }
-    char* str = (char*)malloc(count + 1);
+
+    char str[count + 1];
     fseek(fp, -(count + 1), SEEK_CUR);
     fread(str, count, 1, fp);
     str[count] = '\0';
     my_string s;
     s = str;
-    delete str;
     ch = fgetc(fp); // "
 
 #ifdef DEBUG
@@ -112,47 +112,51 @@ tuple* read_tuple(FILE* fp) {
         ch = fgetc(fp);  // :
         ch = fgetc(fp);  // space
         my_string key_type;
-        int id;
+        int id = 1;
         ch = fgetc(fp);
         if ('"' == ch) {
             my_string key_value;
             key_value = read_text(fp);
             key_type = "text";
             // id = CATALOG.index(key_type, key_name);
-            // add_text(t, id, key_value);
+            add_text(t, id, key_value);
             cout << key_name << " : " << key_value << endl;
         } else if (ch >= '0' && ch <= '9') {
             int key_value;
             key_value = read_int(fp);
             key_type = "int";
             // id = CATALOG.index(key_type, key_name);
-            // add_int(t, id, key_value);
+            add_int(t, id, key_value);
             cout << key_name << " : " << key_value << endl;
         } else if ('t' == ch || 'f' == ch) {
             bool key_value;
             key_value = read_bool(fp);
             key_type = "bool";
             // id = CATALOG.index(key_type, key_name);
-            // add_bool(t, id, key_value);
+            add_bool(t, id, key_value);
             cout << key_name << " : " << boolalpha << key_value << endl;
         } else if ('[' == ch) {
             my_string key_value;
             key_value = read_nested_arr(fp);
             key_type = "nested_arr";
             // id = CATALOG.index(key_type, key_name);
-            // add_nested_arr(t, id, key_value);
+            add_nested_arr(t, id, key_value);
             cout << key_name << " : " << key_value << endl;
         } else if ('{' == ch) {
             tuple* key_value;
+            cout << key_name << " : " << endl;
             key_value = read_tuple(fp);
             key_type = "nested_obj";
             // id = CATALOG.index(key_type, key_name);
-            // add_nested_obj(t, id, *key_value);
-            // delete key_value;
-            cout << key_name << " : " << endl;
+            tuple k;
+            add_nested_obj(t, id, key_value);
+
+            delete key_value;
         }
         ch = fgetc(fp);  // colon
-        if ('}' == ch) break;
+        if ('}' == ch) {
+            break;
+        }
         ch = fgetc(fp);  // space
     }
     return t;

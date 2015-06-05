@@ -4,7 +4,6 @@
 #include <cstdio>
 #include <cstdlib>
 
-
 // a simplified implementation of dynamic array
 template<typename T>
 class my_vector {
@@ -21,7 +20,7 @@ private:
     T* arr;
 };
 
-
+// Implementation
 template<typename T>
 my_vector<T>::my_vector() {
     capacity = 0;
@@ -36,16 +35,21 @@ my_vector<T>::~my_vector() {
 
 template<typename T>
 void my_vector<T>::add(T ele) {
-    if (0 == capacity) {
-        arr = (T*)malloc(sizeof(T) * 1);
-        capacity = 1;
+    if (0 == capacity && NULL == arr) {
+        arr = new T[5];
+        capacity = 2;
     } else if (ele_num == capacity) {
-        arr = (T*)realloc(arr, sizeof(T) * capacity * 2);
-        capacity *= 2;
-    }
+        T* temp = new T[capacity * 2];
+        for (int i = 0; i < ele_num; i++) {
+            temp[i] = arr[i];
+        }
 
+        capacity *= 2;
+        delete[] arr;
+        arr = temp;
+    }
     *(arr + ele_num) = ele;
-    ++ele_num;
+     ++ele_num;
 }
 
 template<typename T>
