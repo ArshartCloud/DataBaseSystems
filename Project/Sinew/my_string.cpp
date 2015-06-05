@@ -1,120 +1,114 @@
 #include "my_string.h"
 
-#define DEBUG
-using namespace std;
-
-const char delimeter = '-';
-
-// return a string with a delimeter '/0'
-char* read_text(FILE* fp) {
-    int count = 0;
-    char ch;
-    while ((ch = fgetc(fp)) != '"') {
-        ++count;
-    }
-    fseek(fp, -(count + 1), SEEK_CUR);
-    char *str = (char*)malloc(sizeof(count + 1));
-    fread(str, count, 1, fp);
-    ch = fgetc(fp); // "
+// initialize the capacity to be 1
+my_string::my_string(int count) {
+    str = new char[count + 1];
     str[count] = '\0';
-#ifdef DEBUG
-    cout << "Read a text" << endl;
-    cout << "str = " << str << endl;
-    cout << endl;
-#endif // DEBUG
-    return str;
+    length = 0;
 }
 
-int read_int(FILE* fp) {
-    int k = 0;
-    char ch;
-    fseek(fp, -1, SEEK_CUR);
-    while ((ch = fgetc(fp)) >= '0' && (ch <= '9')) {
-        k = k * 10 + (ch - '0');
-    }
-#ifdef DEBUG
-    cout << "Read a integer" << endl;
-    cout << "int = " << k << endl;
-    cout << endl;
-#endif
-    return k;
-}
+my_string::my_string(const char* src) {
+    if (NULL != src) {
+        int len = strlen(src);
+        str = new char[len + 1];
+        strncpy(str, src, len);
+        str[len] = '\0';
 
-bool read_bool(FILE* fp) {
-    bool k;
-    char ch;
-    int skip;
-    fseek(fp, -1, SEEK_CUR);
-    ch = fgetc(fp);
-    assert('f' == ch || 't' == ch);
-    if ('f' == ch) {
-        k = false;
-        skip = 4;
-    } else if ('t' == ch) {
-        k = true;
-        skip = 3;
-    }
-    for (int i = 0; i < skip; i++) {
-        ch = fgetc(fp);
-    }
-#ifdef DEBUG
-    cout << "Read a bool variable" << endl;
-    cout << "bool = " << boolalpha << k << endl;
-    cout << endl;
-#endif // DEBUG
-    return k;
-}
-
-char* read_nested_arr(FILE* fp) {
-    int count = 0;
-    char ch;
-    char *s = NULL;
-    char *s_next;
-    while ((ch = fgetc(fp)) != ']') {
-        if ('"' == ch) {
-            s_next = read_text(fp);
-            // if (s != NULL) {
-            //     join_str(s, s_next, strlen(s_next));
-            // } else {
-            //     s = (char*)malloc((strlen(s_next)));
-            //     strncpy(s, s_next, sizeof(s));
-            // }
-            join_str(s, s_next, strlen(s_next));
-        }
-    }
-#ifdef DEBUG
-    cout << "Read a nested_arr" << endl;
-    cout << s << endl;
-    cout << endl;
-#endif // MACRO
-    return s;
-}
-
-void read_tuple(FILE *fp, tuple* t) {
-
-}
-
-void join_str(char* s, char* s_next, int count) {
-    if (NULL == s) {
-        s = (char*)malloc(count + 1);
-        strncpy(s, s_next, count);
-        s[count] = '/0';
+        length = len;
     } else {
-        int length = strlen(s);
-        s = (char*)realloc(s, length + count + 1);
-        strncpy(s + length, s_next, count);
-        s[length + count] = '/0';
+        str = new char[1];
+        str[0] = '\0';
+        length = 0;
     }
 }
 
-void join_int(int* k, int num, int ele) {
-    if (NULL == k) {
-        k = (int*)malloc(sizeof(int));
+my_string::my_string(my_string& src) {
+    str = new char[src.length + 1];
+    strncpy(str, src.str, src.length);
+    str[src.length] = '\0';
+
+    length = src.length;
+}
+
+// release the memory
+my_string::~my_string() {
+    delete[] str;
+}
+
+my_string& my_string::operator=(const my_string& src) {
+    if (this != &src) {
+        delete[] str;
+        str = new char[src.length + 1];
+        strncpy(str, src.str, src.length);
+        str[src.length] = '\0';
+
+        length = src.length;
+    }
+    return *this;
+}
+
+
+
+
+my_string& my_string::operator=(const char* src) {
+    if (NULL != src) {
+        delete[] str;
+        length = strlen(src);
+        str = new char[length + 1];
+        strncpy(str, src, length);
+        str[length] = '\0';
+    }
+    return *this;
+}
+
+my_string my_string::operator+(const my_string& src) {
+    my_string newStr;
+    newStr.length = this->length + src.length;
+    newStr.str = new char[this->length + src.length + 1];
+    strncpy(newStr.str, this->str, this->length);
+    strncpy(newStr.str + this->length, src.str, src.length);
+    newStr.str[this->length + src.length] = '\0';
+    return newStr;
+}
+
+my_string my_string::operator+(const char* src) {
+    my_string newStr;
+    if (src != NULL) {
+        newStr.length = this->length + strlen(src);
+        newStr.str = new char[this->length + strlen(src) + 1];
+        strncpy(newStr.str, this->str, this->length);
+        strncpy(newStr.str + this->length, src, (strlen(src)));
+        newStr.str[this->length + strlen(src)] = '\0';
+        return newStr;
+    }
+}
+
+bool my_string::operator==(const my_string& src) {
+    if (strcmp(this->str, src.str) == 0) {
+        return true;
     } else {
-        k = (int*)realloc(k, sizeof(int) * (num + 1));
-        k += num;
+        return false;
     }
-    *k = ele;
 }
 
+bool my_string::operator==(const char* src) {
+    if (strcmp(this->str, src) == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
+int my_string::size() {
+    return this->length;
+}
+
+ostream& operator<<(ostream& os, my_string& s) {
+    os << s.str;
+    return os;
+}
+
+istream& operator>>(istream& is, my_string& s) {
+    is >> s.str;
+    return is;
+}
