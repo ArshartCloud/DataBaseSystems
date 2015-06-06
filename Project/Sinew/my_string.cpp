@@ -47,9 +47,6 @@ my_string& my_string::operator=(const my_string& src) {
     return *this;
 }
 
-
-
-
 my_string& my_string::operator=(const char* src) {
     if (NULL != src) {
         delete[] str;
@@ -99,7 +96,11 @@ bool my_string::operator==(const char* src) {
     }
 }
 
-int my_string::size() {
+char* my_string::content(void) {
+    return str;
+}
+
+int my_string::size(void) {
     return this->length;
 }
 

@@ -24,8 +24,10 @@ public:
 
     bool operator==(const my_string& src);
     bool operator==(const char* src);
+    // return a pointer to str
+    char* content(void);
 
-    int size();
+    int size(void);
 private:
     // end with a '\0'
     char* str;

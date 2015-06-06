@@ -1,5 +1,6 @@
 #include "serial.h"
 #include <cstring>
+#include <cstdio>
 
 void initial(tuple* t) {
     assert(t != NULL);
@@ -10,32 +11,19 @@ void initial(tuple* t) {
     return;
 }
 
-void add_int(tuple* t, int id, int key_value) {
-    assert(t != NULL);
-    int size = sizeof(int);
-
-    ++t->key_num;
-    t->aid.add(id);
-    t->offset.add(t->len);
-    t->len += size;
-    // tranform a integer into string
-    char *s = new char[size + 1];
-    s[size] = '\0';
-    strncpy(s, (char*)&id, size);
-    t->data = t->data + s;
-
-    delete[] s;
+void add_int(tuple* t, int id, my_string key_value) {
+    add_text(t, id, key_value);
     return;
 }
 
 void add_text(tuple* t, int id, my_string key_value) {
     assert(t != NULL);
-
     ++t->key_num;
     t->aid.add(id);
     t->offset.add(t->len);
-    t->len += key_value.size();
     t->data = t->data + key_value;
+    t->len += key_value.size();
+
     return;
 }
 
@@ -61,12 +49,11 @@ void add_nested_arr(tuple *t, int id, my_string key_value) {
 }
 
 void add_nested_obj(tuple* t, int id, tuple* nested) {
-    tuple child;
     ++t->key_num;
     t->aid.add(id);
     t->offset.add(t->len);
     t->len += 0;
-//    t->child.add(child);
+    t->child.add(*nested);
     ++t->child_num;
     return;
 }
@@ -75,7 +62,5 @@ void sort_id(tuple* t) {
     return;
 }
 
-void foo(tuple *t, int id, tuple* k) {
 
-    return;
-}
+
