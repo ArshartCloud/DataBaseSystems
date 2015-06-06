@@ -2,12 +2,9 @@
 #include <iostream>
 #include <iomanip>
 #include <cstring>
-
 using namespace std;
 
 const int padding = 20;
-
-
 
 catalog::catalog(void) {
     head = new attribute;
@@ -24,10 +21,17 @@ catalog::~catalog(void) {
     for (int i = 0; i < count; i++) {
         last = tail->pre;
         tail->pre = tail->pre->pre;
+        delete[] last->key_name;
+        last->key_name = NULL;
+        delete[] last->key_type;
+        last->key_type = NULL;
         delete last;
+        last = NULL;
     }
     delete head;
+    head = NULL;
     delete tail;
+    tail = NULL;
 }
 
 void catalog::print(void) {

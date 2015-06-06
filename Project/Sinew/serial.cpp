@@ -23,7 +23,6 @@ void add_text(tuple* t, int id, my_string key_value) {
     t->offset.add(t->len);
     t->data = t->data + key_value;
     t->len += key_value.size();
-
     return;
 }
 
@@ -61,6 +60,4 @@ void add_nested_obj(tuple* t, int id, tuple* nested) {
 void sort_id(tuple* t) {
     return;
 }
-
-
 

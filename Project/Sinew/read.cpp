@@ -125,6 +125,7 @@ tuple* read_tuple(FILE* fp, catalog* CATALOG) {
             key_type = "nested_obj";
             id = CATALOG->index(key_type.content(), key_name.content());
             add_nested_obj(t, id, key_value);
+            delete key_value;
         }
         ch = fgetc(fp);  // colon
         if ('}' == ch) {

@@ -26,7 +26,7 @@ public:
     bool operator==(const char* src);
     // return a pointer to str
     char* content(void);
-
+    void release(void);
     int size(void);
 private:
     // end with a '\0'
