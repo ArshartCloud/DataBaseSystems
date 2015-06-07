@@ -56,6 +56,7 @@ void write_file(FILE* in, FILE* out,catalog* CATALOG) {
         write_tuple(out, t);
 
         ch = fgetc(in); // colon or endline
+        ch = fgetc(in);
         ch = fgetc(in); // endline or right square bracket
 
         if (']' == ch) {
