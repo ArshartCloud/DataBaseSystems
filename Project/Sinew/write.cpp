@@ -1,4 +1,9 @@
 #include "write.h"
+#include <cstdio>
+#include <iostream>
+#include "read.h"
+#include "serial.h"
+#include "my_vector.cpp"
 
 void write_tuple(FILE* fp, tuple* t) {
     fprintf(fp, "{count: %d", t->key_num);
