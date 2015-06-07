@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <cstring>
-
 using namespace std;
 
 // a simplified implementation of string
@@ -15,18 +14,14 @@ public:
     my_string(const char* src);
     my_string(my_string& src);
     ~my_string();
-
     my_string& operator=(const my_string& src);
     my_string operator+(const my_string& src);
-
     my_string& operator=(const char* src);
     my_string operator+(const char* src);
-
     bool operator==(const my_string& src);
     bool operator==(const char* src);
     // return a pointer to str
     char* content(void);
-
     int size(void);
 private:
     // end with a '\0'

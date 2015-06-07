@@ -1,9 +1,11 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 
+#include <cstdio>
+#include <iostream>
+#include <cstring>
 #include "my_vector.cpp"
 #include "my_string.h"
-#include <cassert>
 
 struct tuple {
     int key_num;

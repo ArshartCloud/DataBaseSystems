@@ -1,15 +1,11 @@
 #ifndef READ_H
 #define READ_H
 
-#include <cstdio>
-#include <iostream>
-#include <cassert>
 #include <cstring>
-#include <cstdlib>
-#include "my_string.h"
 #include "serial.h"
-#include "my_vector.cpp"
 #include "catalog.h"
+#include "my_string.h"
+
 // read a string with a '\0' from fp;
 my_string read_text(FILE* fp);
 // read a integer from fp;

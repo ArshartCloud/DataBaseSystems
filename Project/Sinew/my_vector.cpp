@@ -1,10 +1,7 @@
 #ifndef MY_VECTOR_H
 #define MY_VECTOR_H
 
-#include <cstdio>
 #include <cstdlib>
-#include <iostream>
-
 using namespace std;
 
 // a simplified implementation of dynamic array
@@ -41,7 +38,6 @@ int my_vector<T>::getSize(void) {
     return ele_num;
 }
 
-
 template<typename T>
 void my_vector<T>::add(T ele) {
     if (0 == capacity && NULL == arr) {
@@ -68,14 +64,12 @@ void my_vector<T>::vector_release(void) {
     }
 }
 
-
 template<typename T>
 T& my_vector<T>::operator[](int pos) {
     if (pos < ele_num) {
         return *(arr + pos);
     }
 }
-
 
 #endif /* MY_VECTOR_H */
 

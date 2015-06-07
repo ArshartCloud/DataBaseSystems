@@ -1,7 +1,4 @@
 #include "read.h"
-#include <cstdio>
-#include <iostream>
-
 using namespace std;
 
 const char delimeter = '-';
@@ -45,7 +42,6 @@ bool read_bool(FILE* fp) {
     int skip;
     fseek(fp, -1, SEEK_CUR);
     ch = fgetc(fp);
-    assert('f' == ch || 't' == ch);
     if ('f' == ch) {
         k = false;
         skip = 4;

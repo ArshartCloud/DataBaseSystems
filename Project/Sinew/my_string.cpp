@@ -13,7 +13,6 @@ my_string::my_string(const char* src) {
         str = new char[len + 1];
         strncpy(str, src, len);
         str[len] = '\0';
-
         length = len;
     } else {
         str = new char[1];
@@ -26,7 +25,6 @@ my_string::my_string(my_string& src) {
     str = new char[src.length + 1];
     strncpy(str, src.str, src.length);
     str[src.length] = '\0';
-
     length = src.length;
 }
 
@@ -41,7 +39,6 @@ my_string& my_string::operator=(const my_string& src) {
         str = new char[src.length + 1];
         strncpy(str, src.str, src.length);
         str[src.length] = '\0';
-
         length = src.length;
     }
     return *this;

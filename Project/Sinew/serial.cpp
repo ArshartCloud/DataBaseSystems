@@ -1,12 +1,8 @@
 #include "serial.h"
 #include <cstring>
-#include <cstdio>
-#include <iostream>
-
 using namespace std;
 
 void initial(tuple* t) {
-    assert(t != NULL);
     t->key_num = 0;
     t->len = 0;
     t->data = "";
@@ -20,7 +16,6 @@ void add_int(tuple* t, int id, my_string key_value) {
 }
 
 void add_text(tuple* t, int id, my_string key_value) {
-    assert(t != NULL);
     ++t->key_num;
     t->aid.add(id);
     t->offset.add(t->len);
@@ -31,7 +26,6 @@ void add_text(tuple* t, int id, my_string key_value) {
 }
 
 void add_bool(tuple* t, int id, bool key_value) {
-    assert(t != NULL);
     ++t->key_num;
     t->aid.add(id);
     t->offset.add(t->len);
@@ -69,7 +63,6 @@ void tuple_release(tuple* t) {
         t->aid.vector_release();
         t->offset.vector_release();
         t->child.vector_release();
-        cout << t << endl;
         delete t;
     }
 }

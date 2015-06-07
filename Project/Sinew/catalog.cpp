@@ -2,12 +2,9 @@
 #include <iostream>
 #include <iomanip>
 #include <cstring>
-
 using namespace std;
 
 const int padding = 20;
-
-
 
 catalog::catalog(void) {
     head = new attribute;
@@ -53,9 +50,7 @@ void catalog::print(void) {
     return;
 }
 
-
 void catalog::find(char* key_name, void* key_value) {
-
     return;
 }
 
