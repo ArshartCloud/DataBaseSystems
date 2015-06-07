@@ -9,14 +9,14 @@ my_string read_text(FILE* fp) {
     while ((ch = fgetc(fp)) != '"') {
         ++count;
     }
-
     char str[count + 1];
     fseek(fp, -(count + 1), SEEK_CUR);
     fread(str, count, 1, fp);
     str[count] = '\0';
     my_string s;
     s = str;
-    ch = fgetc(fp); // "
+     // right double quotation mark, "
+    ch = fgetc(fp);
     return s;
 }
 
@@ -39,17 +39,18 @@ my_string read_int(FILE* fp) {
 bool read_bool(FILE* fp) {
     bool k;
     char ch;
-    int skip;
+    int padding;
     fseek(fp, -1, SEEK_CUR);
     ch = fgetc(fp);
     if ('f' == ch) {
         k = false;
-        skip = 4;
+        padding = 4;
     } else if ('t' == ch) {
         k = true;
-        skip = 3;
+        padding = 3;
     }
-    for (int i = 0; i < skip; i++) {
+    // lean over (b)ool or (f)alse
+    for (int i = 0; i < padding; i++) {
         ch = fgetc(fp);
     }
     return k;
@@ -60,7 +61,6 @@ my_string read_nested_arr(FILE* fp) {
     int count = 0;
     char ch;
     my_string s, s_next;
-
     while ((ch = fgetc(fp)) != ']') {
         if ('"' == ch) {
             s_next = read_text(fp);
@@ -82,12 +82,14 @@ tuple* read_tuple(FILE* fp, catalog* CATALOG) {
     tuple *t = new tuple;
     initial(t);
     while (1) {
-        // read a key name
-        ch = fgetc(fp); // "
+        // right double quotation mark, "
+        ch = fgetc(fp);
         my_string key_name;
         key_name = read_text(fp);
-        ch = fgetc(fp);  // :
-        ch = fgetc(fp);  // space
+        // colon, :
+        ch = fgetc(fp);
+        // space
+        ch = fgetc(fp);
         my_string key_type;
         int id = 1;
         ch = fgetc(fp);
@@ -122,11 +124,13 @@ tuple* read_tuple(FILE* fp, catalog* CATALOG) {
             id = CATALOG->index(key_type.content(), key_name.content());
             add_nested_obj(t, id, key_value);
         }
-        ch = fgetc(fp);  // colon
+        // colon, ;
+        ch = fgetc(fp);
         if ('}' == ch) {
             break;
         }
-        ch = fgetc(fp);  // space
+        // space
+        ch = fgetc(fp);
     }
     return t;
 }

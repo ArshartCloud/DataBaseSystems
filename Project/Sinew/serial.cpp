@@ -1,5 +1,4 @@
 #include "serial.h"
-#include <cstring>
 using namespace std;
 
 void initial(tuple* t) {

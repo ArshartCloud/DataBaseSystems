@@ -1,6 +1,5 @@
 #include "my_string.h"
 
-// initialize the capacity to be 1
 my_string::my_string(int count) {
     str = new char[count + 1];
     str[count] = '\0';
@@ -28,7 +27,6 @@ my_string::my_string(my_string& src) {
     length = src.length;
 }
 
-// release the memory
 my_string::~my_string() {
     delete[] str;
 }
@@ -78,22 +76,6 @@ my_string my_string::operator+(const char* src) {
         strncpy(newStr.str + this->length, src, (strlen(src)));
         newStr.str[this->length + strlen(src)] = '\0';
         return newStr;
-    }
-}
-
-bool my_string::operator==(const my_string& src) {
-    if (strcmp(this->str, src.str) == 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool my_string::operator==(const char* src) {
-    if (strcmp(this->str, src) == 0) {
-        return true;
-    } else {
-        return false;
     }
 }
 

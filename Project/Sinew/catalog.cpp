@@ -30,14 +30,14 @@ catalog::~catalog(void) {
 }
 
 void catalog::print(void) {
-        // heading
+    // heading
     cout << setfill(' ') << left
          << setw(padding) << "_id"
          << setw(padding) << "Key_name"
          << setw(padding) << "Key_type"
          << setw(padding) << "count"
          << endl;
-    // record
+    // key records
     attribute* cur = head->next;
     for (int i = 0; i < count; i++) {
         cout << setw(padding) << cur->_id
@@ -77,7 +77,6 @@ int catalog::index(char* key_type, char* key_name) {
     }
     return p->_id;
 }
-
 
 attribute* catalog::search(char* key_type, char* key_name) {
     attribute *cur = head->next;

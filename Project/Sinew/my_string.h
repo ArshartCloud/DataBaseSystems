@@ -18,10 +18,9 @@ public:
     my_string operator+(const my_string& src);
     my_string& operator=(const char* src);
     my_string operator+(const char* src);
-    bool operator==(const my_string& src);
-    bool operator==(const char* src);
-    // return a pointer to str
+    // return a pointer to the string
     char* content(void);
+    // return the length of the string
     int size(void);
 private:
     // end with a '\0'

@@ -28,6 +28,7 @@ my_vector<T>::my_vector(void) {
     arr = NULL;
 }
 
+// manual release
 template<typename T>
 my_vector<T>::~my_vector(void) {
     //    delete[] arr;
@@ -41,8 +42,8 @@ int my_vector<T>::getSize(void) {
 template<typename T>
 void my_vector<T>::add(T ele) {
     if (0 == capacity && NULL == arr) {
-        arr = new T[2];
-        capacity = 2;
+        arr = new T[1];
+        capacity = 1;
     } else if (ele_num == capacity) {
         T* temp = new T[capacity * 2];
         for (int i = 0; i < ele_num; i++) {
@@ -52,8 +53,7 @@ void my_vector<T>::add(T ele) {
         delete[] arr;
         arr = temp;
     }
-    arr[ele_num] = ele;
-     ++ele_num;
+    arr[ele_num++] = ele;
 }
 
 template<typename T>

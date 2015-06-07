@@ -24,7 +24,6 @@ public:
     int index(char* key_type, char* key_name);
     // search wheterh this key is already indexed, if it is, return pointer to this attribute;otherwise, return NULL;
     attribute* search(char* key_type, char* key_name);
-
 private:
     attribute* head;
     attribute* tail;

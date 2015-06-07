@@ -11,10 +11,13 @@ struct tuple {
     int key_num;
     my_vector<int> aid;
     my_vector<int> offset;
-    int len; // length of all data, except for nested_obj
+    // length of all data, except for nested_obj
+    int len;
+    // key data except nested _obj
     my_string data;
     my_vector<tuple*> child;
-    int child_num;  // number of nested_obj
+    // number of nested_obj
+    int child_num;
 };
 
 // initialize a tuple
