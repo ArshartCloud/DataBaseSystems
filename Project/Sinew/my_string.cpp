@@ -1,5 +1,4 @@
 #include "my_string.h"
-#include <cstdio>
 
 // initialize the capacity to be 1
 my_string::my_string(int count) {
@@ -31,19 +30,14 @@ my_string::my_string(my_string& src) {
     length = src.length;
 }
 
+// release the memory
 my_string::~my_string() {
-    if (NULL != str) {
-        delete[] str;
-        str = NULL;
-    }
+    delete[] str;
 }
 
 my_string& my_string::operator=(const my_string& src) {
     if (this != &src) {
-        if (NULL != str) {
-            delete[] str;
-            str = NULL;
-        }
+        delete[] str;
         str = new char[src.length + 1];
         strncpy(str, src.str, src.length);
         str[src.length] = '\0';
@@ -55,10 +49,7 @@ my_string& my_string::operator=(const my_string& src) {
 
 my_string& my_string::operator=(const char* src) {
     if (NULL != src) {
-        if (NULL != str) {
-            delete[] str;
-            str = NULL;
-        }
+        delete[] str;
         length = strlen(src);
         str = new char[length + 1];
         strncpy(str, src, length);
@@ -69,7 +60,6 @@ my_string& my_string::operator=(const char* src) {
 
 my_string my_string::operator+(const my_string& src) {
     my_string newStr;
-    newStr.release();
     newStr.length = this->length + src.length;
     newStr.str = new char[this->length + src.length + 1];
     strncpy(newStr.str, this->str, this->length);
@@ -80,7 +70,6 @@ my_string my_string::operator+(const my_string& src) {
 
 my_string my_string::operator+(const char* src) {
     my_string newStr;
-    newStr.release();
     if (src != NULL) {
         newStr.length = this->length + strlen(src);
         newStr.str = new char[this->length + strlen(src) + 1];
@@ -111,13 +100,6 @@ char* my_string::content(void) {
     return str;
 }
 
-void my_string::release(void) {
-    if (str != NULL) {
-        delete[] str;
-        str = NULL;
-    }
-}
-
 int my_string::size(void) {
     return this->length;
 }
@@ -131,4 +113,3 @@ istream& operator>>(istream& is, my_string& s) {
     is >> s.str;
     return is;
 }
-
