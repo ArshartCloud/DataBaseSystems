@@ -60,6 +60,8 @@ my_string& my_string::operator=(const char* src) {
 
 my_string my_string::operator+(const my_string& src) {
     my_string newStr;
+    char* p = newStr.content();
+    delete[] p;
     newStr.length = this->length + src.length;
     newStr.str = new char[this->length + src.length + 1];
     strncpy(newStr.str, this->str, this->length);
@@ -70,6 +72,8 @@ my_string my_string::operator+(const my_string& src) {
 
 my_string my_string::operator+(const char* src) {
     my_string newStr;
+    char* p = newStr.content();
+    delete[] p;
     if (src != NULL) {
         newStr.length = this->length + strlen(src);
         newStr.str = new char[this->length + strlen(src) + 1];

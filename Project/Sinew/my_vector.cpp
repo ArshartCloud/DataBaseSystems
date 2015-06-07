@@ -11,11 +11,12 @@ using namespace std;
 template<typename T>
 class my_vector {
 public:
-    my_vector();
-    virtual ~my_vector();
+    my_vector(void);
+    virtual ~my_vector(void);
     void add(T ele);
-    T* pointer(int pos);
     T& operator[](int pos);
+    void vector_release(void);
+    int getSize(void);
 private:
     int capacity;
     int ele_num;
@@ -24,17 +25,22 @@ private:
 
 // Implementation
 template<typename T>
-my_vector<T>::my_vector() {
+my_vector<T>::my_vector(void) {
     capacity = 0;
     ele_num = 0;
     arr = NULL;
 }
 
 template<typename T>
-my_vector<T>::~my_vector() {
-    //printf("my_vector destroyed\n");
+my_vector<T>::~my_vector(void) {
     //    delete[] arr;
 }
+
+template<typename T>
+int my_vector<T>::getSize(void) {
+    return ele_num;
+}
+
 
 template<typename T>
 void my_vector<T>::add(T ele) {
@@ -55,9 +61,10 @@ void my_vector<T>::add(T ele) {
 }
 
 template<typename T>
-T* my_vector<T>::pointer(int pos) {
-    if (pos <= ele_num - 1) {
-        return (arr + pos);
+void my_vector<T>::vector_release(void) {
+    if (arr != NULL){
+        delete[] arr;
+        arr = NULL;
     }
 }
 

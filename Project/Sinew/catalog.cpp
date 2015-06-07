@@ -23,6 +23,8 @@ catalog::~catalog(void) {
     attribute* last;
     for (int i = 0; i < count; i++) {
         last = tail->pre;
+        delete[] last->key_name;
+        delete[] last->key_type;
         tail->pre = tail->pre->pre;
         delete last;
     }

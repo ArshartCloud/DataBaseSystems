@@ -11,7 +11,7 @@ struct tuple {
     my_vector<int> offset;
     int len; // length of all data, except for nested_obj
     my_string data;
-    my_vector<tuple> child;
+    my_vector<tuple*> child;
     int child_num;  // number of nested_obj
 };
 
@@ -27,7 +27,8 @@ void add_bool(tuple* t, int id, bool key_value);
 void add_nested_arr(tuple *t, int id, my_string key_value);
 // add a nested_obj key into a tuple
 void add_nested_obj(tuple* t, int id, tuple* nested);
-
+// release memory of a tuple
+void tuple_release(tuple* t);
 // sort the key with aid using binary search
 void sort_id(tuple* t);
 

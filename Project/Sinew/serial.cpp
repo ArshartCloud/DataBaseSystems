@@ -1,6 +1,9 @@
 #include "serial.h"
 #include <cstring>
 #include <cstdio>
+#include <iostream>
+
+using namespace std;
 
 void initial(tuple* t) {
     assert(t != NULL);
@@ -53,9 +56,22 @@ void add_nested_obj(tuple* t, int id, tuple* nested) {
     t->aid.add(id);
     t->offset.add(t->len);
     t->len += 0;
-    t->child.add(*nested);
+    t->child.add(nested);
     ++t->child_num;
     return;
+}
+
+void tuple_release(tuple* t) {
+     for (int i = 0; i < t->child_num; i++) {
+         tuple_release(t->child[i]);
+     }
+    if (t != NULL) {
+        t->aid.vector_release();
+        t->offset.vector_release();
+        t->child.vector_release();
+        cout << t << endl;
+        delete t;
+    }
 }
 
 void sort_id(tuple* t) {

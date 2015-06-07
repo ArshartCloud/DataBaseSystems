@@ -1,6 +1,8 @@
 #include <cstdio>
 #include <iostream>
 #include "read.h"
+#include "my_vector.cpp"
+#include "serial.h"
 
 using namespace std;
 
@@ -21,8 +23,9 @@ void write_tuple(FILE* fp, tuple* t) {
 
     for (int i = 0; i < t->child_num; i++) {
         fprintf(fp, ", ");
-        write_tuple(fp, &(t->child[i]));
+        write_tuple(fp, (t->child[i]));
     }
+
     return;
 }
 
@@ -30,15 +33,16 @@ void write_file(FILE* in, FILE* out,catalog* CATALOG) {
     fprintf(out, "[\n");
     char ch;
     tuple *t;
+    my_vector<tuple*> arr;
+
     ch = fgetc(in); // [
     ch = fgetc(in); // /n
-//    ch = fgetc(in); // {
     while (1) {
         ch = fgetc(in); // left curly bracket
         t = read_tuple(in, CATALOG);
-        write_tuple(out, t);
-        tuple* c = &(t->child[0]);
 
+        write_tuple(out, t);
+        arr.add(t);
         ch = fgetc(in); // colon or endline
         ch = fgetc(in);
         ch = fgetc(in); // endline or right square bracket
@@ -51,5 +55,11 @@ void write_file(FILE* in, FILE* out,catalog* CATALOG) {
             fputc('\n', out);
         }
     }
+    int size = arr.getSize();
+    for (int i = 0; i < size; i++) {
+        tuple_release((arr[i]));
+    }
+
+    arr.vector_release();
     fprintf(out, "]\n");
 }
