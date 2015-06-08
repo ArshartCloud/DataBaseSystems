@@ -84,9 +84,8 @@ attribute* catalog::search(char* key_type, char* key_name) {
         if (0 == strcmp(cur->key_type, key_type) &&
             0 == strcmp(cur->key_name, key_name)) {
             return cur;
-        } else {
-            cur = cur->next;
         }
+        cur = cur->next;
     }
     return NULL;
 }

@@ -45,6 +45,9 @@ void write_file(FILE* in, FILE* out,catalog* CATALOG) {
         ch = fgetc(in);
         // endline, \n
         ch = fgetc(in);
+        if (']' == ch) {
+            break;
+        }
     }
     fprintf(out, "]\n");
     //  release memory
