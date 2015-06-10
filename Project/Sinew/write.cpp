@@ -10,7 +10,7 @@ void write_tuple(FILE* fp, tuple* t) {
     for (int i = 0; i < t->key_num; i++) {
         fprintf(fp, ", aid%d: %d", i, t->aid[i]);
     }
-    for (int i = 0; i < t->key_num - 1; i++) {
+    for (int i = 0; i < t->key_num; i++) {
         fprintf(fp, ", offset%d: %d", i, t->offset[i]);
     }
     fprintf(fp, ", len: %d, data: %s}", t->len, t->data.content());
