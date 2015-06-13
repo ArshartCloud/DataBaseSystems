@@ -6,6 +6,9 @@
 #include "catalog.h"
 #include "my_string.h"
 
+// delimeter for nested_arr
+const char delimeter = '|';
+
 // read a string with a '\0' from fp;
 my_string read_text(FILE* fp);
 // read a integer from fp;
@@ -16,8 +19,6 @@ bool read_bool(FILE* fp);
 my_string read_nested_arr(FILE* fp);
 // read a tuple from fp into t
 tuple* read_tuple(FILE* fp, catalog* CATALOG);
-// delimeter for nested_arr
-const char delimeter = '-';
 
 
 #endif /* READ_H */

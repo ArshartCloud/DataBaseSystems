@@ -1,7 +1,6 @@
 #include "read.h"
 using namespace std;
 
-
 my_string read_text(FILE* fp) {
     int count = 0;
     char ch;
@@ -54,7 +53,6 @@ bool read_bool(FILE* fp) {
     }
     return k;
 }
-
 
 my_string read_nested_arr(FILE* fp) {
     char ch;
