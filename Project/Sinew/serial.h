@@ -35,6 +35,6 @@ void add_nested_obj(tuple* t, int id, tuple* nested);
 // release memory of a tuple
 void tuple_release(tuple* t);
 // sort the key with aid using binary search
-void sort_id(tuple* t);
+tuple* sort_id(tuple* t);
 
 #endif /* SERIAL_H */
