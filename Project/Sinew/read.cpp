@@ -128,5 +128,6 @@ tuple* read_tuple(FILE* fp, catalog* CATALOG) {
         // space
         ch = fgetc(fp);
     }
+        t = sort_id(t);
     return t;
 }
