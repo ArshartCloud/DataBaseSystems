@@ -1,7 +1,6 @@
 #include "read.h"
 using namespace std;
 
-const char delimeter = '-';
 
 my_string read_text(FILE* fp) {
     int count = 0;
@@ -58,7 +57,6 @@ bool read_bool(FILE* fp) {
 
 
 my_string read_nested_arr(FILE* fp) {
-    int count = 0;
     char ch;
     my_string s, s_next;
     while ((ch = fgetc(fp)) != ']') {

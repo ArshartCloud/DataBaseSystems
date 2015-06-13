@@ -16,5 +16,8 @@ bool read_bool(FILE* fp);
 my_string read_nested_arr(FILE* fp);
 // read a tuple from fp into t
 tuple* read_tuple(FILE* fp, catalog* CATALOG);
+// delimeter for nested_arr
+const char delimeter = '-';
+
 
 #endif /* READ_H */

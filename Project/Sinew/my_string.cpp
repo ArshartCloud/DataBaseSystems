@@ -1,4 +1,5 @@
 #include "my_string.h"
+#include <cassert>
 
 my_string::my_string(int count) {
     str = new char[count + 1];
@@ -69,14 +70,14 @@ my_string my_string::operator+(const char* src) {
     my_string newStr;
     char* p = newStr.content();
     delete[] p;
-    if (src != NULL) {
-        newStr.length = this->length + strlen(src);
-        newStr.str = new char[this->length + strlen(src) + 1];
-        strncpy(newStr.str, this->str, this->length);
-        strncpy(newStr.str + this->length, src, (strlen(src)));
-        newStr.str[this->length + strlen(src)] = '\0';
-        return newStr;
-    }
+    assert(src != NULL);
+
+    newStr.length = this->length + strlen(src);
+    newStr.str = new char[this->length + strlen(src) + 1];
+    strncpy(newStr.str, this->str, this->length);
+    strncpy(newStr.str + this->length, src, (strlen(src)));
+    newStr.str[this->length + strlen(src)] = '\0';
+    return newStr;
 }
 
 char* my_string::content(void) {
