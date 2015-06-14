@@ -20,7 +20,6 @@ void add_text(tuple* t, int id, my_string key_value) {
     t->offset.add(t->len);
     t->data = t->data + key_value;
     t->len += key_value.size();
-
     return;
 }
 
@@ -113,7 +112,7 @@ void quicksort(my_vector<int> &v, int m, int n, my_vector<int> &od)
 int getLenFromOffset(tuple* t, int offid) {
   if (offid != t->key_num - 1)
     return (t->offset[offid+1] - t->offset[offid]);
-  else 
+  else
     return (t->len - t->offset[offid]);
 }
 
@@ -167,7 +166,6 @@ tuple* sort_id(tuple* t) {
       tuple* nct = sort_id(t->child[Cod[i]]); // child will be release here
       nt->child.add(nct);
     }
-    
     // don't release child, since children were release below
     if (t != NULL) {
         t->aid.vector_release();
