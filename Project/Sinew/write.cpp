@@ -25,7 +25,7 @@ void write_file(FILE* in, FILE* out,catalog* CATALOG) {
     fprintf(out, "[\n");
     char ch;
     tuple *t;
-    my_vector<tuple*> arr;
+//    my_vector<tuple*> &arr = (CATALOG->getarr());
      // left square bracket, [
     ch = fgetc(in);
     // endline, \n
@@ -40,7 +40,7 @@ void write_file(FILE* in, FILE* out,catalog* CATALOG) {
         t = read_tuple(in, CATALOG);
         write_tuple(out, t);
         fprintf(out, ",\n");
-        arr.add(t);
+        CATALOG->getarr().add(t);
         // colon, ,
         ch = fgetc(in);
         // endline, \n
@@ -50,11 +50,5 @@ void write_file(FILE* in, FILE* out,catalog* CATALOG) {
         }
     }
     fprintf(out, "]\n");
-    //  release memory
-    int size = arr.getSize();
-    for (int i = 0; i < size; i++) {
-        tuple_release((arr[i]));
-    }
-    arr.vector_release();
     return;
 }
