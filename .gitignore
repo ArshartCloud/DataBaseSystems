@@ -1,6 +1,9 @@
 HomeWork1/
 *.o
 test
+input_.json
+output
+
 GPATH
 GRTAGS
 GSYMS
