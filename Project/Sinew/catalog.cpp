@@ -89,3 +89,18 @@ attribute* catalog::search(char* key_type, char* key_name) {
     }
     return NULL;
 }
+
+char* catalog::search_id(int id) {
+   // you can use cur_point to make it better
+    attribute *cur = head->next;
+    while (cur -> next != NULL) {
+        if (cur -> _id == id) {
+//	cout << cur -> key_name << endl;
+		return cur -> key_name;
+	}
+      //  cout << count << endl; 
+        cur = cur -> next;
+    }
+    cout << "not find id!\n";
+    return NULL;
+}
