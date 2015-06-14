@@ -17,4 +17,4 @@ $(TARGET) : $(OBJS)
 
 .PHONY : clean
 clean :
-	-rm *.o $(TARGET) output *~ .#*
+	-rm *.o $(TARGET) output input_.json

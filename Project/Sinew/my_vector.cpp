@@ -2,7 +2,7 @@
 #define MY_VECTOR_H
 
 #include <cstdlib>
-//#include <cassert>
+#include <cassert>
 using namespace std;
 
 // a simplified implementation of dynamic array
@@ -29,7 +29,7 @@ my_vector<T>::my_vector(void) {
     arr = NULL;
 }
 
-// manual release
+// manually release
 template<typename T>
 my_vector<T>::~my_vector(void) {
     //    delete[] arr;
@@ -67,9 +67,8 @@ void my_vector<T>::vector_release(void) {
 
 template<typename T>
 T& my_vector<T>::operator[](int pos) {
-   // assert(pos < ele_num);
-    if (pos < ele_num)
-    	return *(arr + pos);
+    assert(pos < ele_num);
+    return *(arr + pos);
 }
 
 #endif /* MY_VECTOR_H */

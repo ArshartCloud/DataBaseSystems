@@ -13,7 +13,7 @@ my_string read_text(FILE* fp) {
     str[count] = '\0';
     my_string s;
     s = str;
-     // right double quotation mark, "
+    // right double quotation mark, "
     ch = fgetc(fp);
     return s;
 }
@@ -130,6 +130,6 @@ tuple* read_tuple(FILE* fp, catalog* CATALOG) {
         // space
         ch = fgetc(fp);
     }
-       // t = sort_id(t);
+    t = sort_id(t);
     return t;
 }
