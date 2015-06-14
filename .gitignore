@@ -1,5 +1,8 @@
 HomeWork1/
 *.o
 test
-
+GPATH
+GRTAGS
+GSYMS
+GTAGS
 

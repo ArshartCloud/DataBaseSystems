@@ -57,11 +57,13 @@ bool read_bool(FILE* fp) {
 my_string read_nested_arr(FILE* fp) {
     char ch;
     my_string s, s_next;
+    bool first = true;
     while ((ch = fgetc(fp)) != ']') {
         if ('"' == ch) {
             s_next = read_text(fp);
-            if (0 == s.size()) {
+            if (first) {
                 s = s_next;
+                first = false;
             } else {
                 char divide[0];
                 divide[0] = delimeter;
