@@ -95,5 +95,6 @@ ostream& operator<<(ostream& os, my_string& s) {
 
 istream& operator>>(istream& is, my_string& s) {
     is >> s.str;
+    s.length = strlen(s.str);
     return is;
 }
