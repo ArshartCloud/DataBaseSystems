@@ -9,56 +9,64 @@
 #include <cstring>
 using namespace std;
 
+int tran::add_num(FILE *in, form &json) {
+  int x = 0;
+  char ch = fgetc(in);
+  while (ch != ',') {
+    ch = fgetc(in);
+    if (ch == ',') {
+      ch = fgetc(in);
+      if (ch == ' ')
+        ch = ',';
+    }
+  }
+  fseek(in, -6, SEEK_CUR);
+  fread(&x, sizeof(int), 1, in);
+cout << x << endl;
+  return x;
+}
 
-void tran::read_detail(catalog* CATALOG, form &json) {
-    int cur = 0, next = 0, size = json.str.getSize();
-    while (cur < size && json.str[cur] != ':')  cur++;
-    cur++;
-    cur++;
-    while (cur < size && json.str[cur] >= '0' && json.str[cur] <= '9')
-      next = next * 10 + (json.str[cur++] - '0');
-    json.count = next;
-    get_aid(cur, json);
-    get_offset(cur, json);
-    get_data(cur, json);
-    get_name(CATALOG, json);
+void tran::read_detail(FILE *in, catalog* CATALOG, form &json) {
+     fseek(in, 3, SEEK_CUR);
+     char c = fgetc(in);
+     json.count = add_num(in, json);  // get count
+     get_aid(in, json);
+     get_offset(in, json);
+     get_data(in, json);
+     get_name(CATALOG, json);
+for(int i = 0; i < json.name.getSize(); i++) cout << json.name[i] << endl;
+     return;
 }
 
 void tran::write(FILE *in, FILE *out, catalog *CATALOG, form &json) {
-    read_detail(CATALOG, json);
-    fprintf(out, "{");
-    int i = 0, z = 0, k = 0, len = json.offset.getSize(), size = json.str.getSize(), size_d = json.data.getSize();
+    read_detail(in, CATALOG, json);
+    char s1[] = "{", s4[] = "";
+    fwrite(s1, strlen(s1), 1, out);
+    int i = 0, z = 0, k = 0, len = json.offset.getSize(), size_d = json.data.getSize();
     for (; i < json.aid.getSize();i++) {
-        fprintf(out, "\"");
-//cout << "name: " << i << " " << json.name[i] << endl;
-        fprintf(out, "%s", json.name[i]);
-        fprintf(out, "\": ");
+        char s2[] = "\"", s3[] = "\": ";
+        fwrite(s2,strlen(s2), 1 , out);
+        fwrite(json.name[i],strlen(json.name[i]),1,out);
+        fwrite(s3, strlen(s3), 1, out);
         if (i + 1 >= len || i >= len) {
 	   cout << "error\n";
            break;
         }
         k = json.offset[i];
         if (k >= size_d) break;
-//cout << "offset[i]: " << i << " " << json.offset[i] << endl;
         int off = json.offset[i + 1] - json.offset[i];
         if (strcmp(json.name[i], "nested_arr") == 0){ // 嵌套数组分开处理
+cout << "arr\n";
             write_arr(out, json, k, i);
+cout << "end arr\n";
         }
 	else if (off == 0) { // 这里递归调用
+cout << "digui\n";
             form j1;
-            z++;
-            int cur = json.cur;
-            while (cur < size && json.str[cur] != '}') {
-                j1.str.add(json.str[cur++]);
-            }
-            j1.str.add(json.str[cur]);
-            tran::write(in, out, CATALOG, j1);
-            j1.data.vector_release();
-            j1.aid.vector_release();
-     	    j1.name.vector_release();
-            j1.offset.vector_release();
-            j1.str.vector_release();
-	    fprintf(out, ", ");
+            write(in, out, CATALOG, j1);
+            //char s1[] = ", ";
+            //fwrite(s1, sizeof(s1), 1, out);
+            fprintf(out, ", ");
         }
         else if(json.data[k] == 'T' || json.data[k] == 'F'){ // bool 类型的数
             write_bool(out, json, k);
@@ -67,6 +75,7 @@ void tran::write(FILE *in, FILE *out, catalog *CATALOG, form &json) {
 	}
     }
     fprintf(out, "}");
+    cout << "end write\n";
 }
 
 void tran::write_bool(FILE *out, form json, int &k) {
@@ -78,13 +87,11 @@ void tran::write_text(FILE *out, form json, int &k, int &z) {
     int off = json.offset[z + 1] - json.offset[z];
     if (json.data[k] >= '0' && json.data[k] <= '9') {
         for (int j = 0; j < off; j++) {
-            //if (json.data[k] >= 0 && json.data[k] < 9) json.data[k] += '0';
             fprintf(out, "%c", json.data[k++]);
         }
     } else {
 	fprintf(out, "\"");
         for (int j = 0; j < off; j++) {
-            //if (json.data[k] >= 0 && json.data[k] < 9) json.data[k] += '0';
             fprintf(out, "%c", json.data[k++]);
         }
         fprintf(out, "\"");
@@ -134,47 +141,53 @@ void tran::write_arr(FILE *out, form json, int &k, int &z) {
     }
 }
 
-void tran::get_aid(int &cur, form &json) {
-    int size = json.str.getSize();
-    while(cur + 2 < size && json.str[cur + 2] == 'a') {
-       cur += 2;
-       int x = 0;
-       while (cur < size && json.str[cur] != ' ') cur++;
-       cur++;
-       while (cur < size && json.str[cur] >= '0' && json.str[cur] <= '9') x = x * 10 + (json.str[cur++] - '0');
-       json.aid.add(x);
-    }
+void tran::get_aid(FILE *in, form &json) {
+  for (int i = 0; i < json.count; i++) {
+     char c = fgetc(in);
+     while (c != ' ') {
+       c = fgetc(in);
+     }
+     c = fgetc(in);
+     int x = add_num(in, json);
+     json.aid.add(x);
+  }
 }
 
-void tran::get_offset(int &cur, form &json) {
-    int size = json.str.getSize();
-    while (cur + 2 < size && json.str[cur + 2] == 'o') {
-      cur += 2;
-      int x = 0;
-      while (cur< size && json.str[cur] != ' ') cur++;
-      cur++;
-      while (cur < size && json.str[cur] >= '0' && json.str[cur] <= '9') x= x * 10 + (json.str[cur++] - '0');
-      json.offset.add(x);
-    }
-    cur += 7;
-    int x = 0;
-    while (cur < size && json.str[cur] >= '0' && json.str[cur] <= '9') {
-        x = x * 10 + (json.str[cur++] - '0');
-    }
-    json.offset.add(x);
+void tran::get_offset(FILE *in, form &json) {
+  for (int i = 0; i < json.count; i++) {
+     char c = fgetc(in);
+     while (c != ' ') {
+       c = fgetc(in);
+     }
+     c = fgetc(in);
+     int x = add_num(in, json);
+     json.offset.add(x);
+  }
+  char c = fgetc(in);
+  while (c != ' ') {
+    c = fgetc(in);
+  }
+  c = fgetc(in);
+  int x = add_num(in, json);
+  json.offset.add(x);
 }
 
-void tran::get_data(int &cur, form &json) {
-    int size = json.str.getSize();
-    cur += 8;
-    while (cur < size && !(json.str[cur] == ',' && json.str[cur - 1] == '}')) {
-       // if (json.str[cur] > 0 && json.str[cur] < 9) json.str[cur] += '0';
-        json.data.add(json.str[cur++]);
+void tran::get_data(FILE *in, form &json) {
+    int size = json.offset.getSize();
+    int len = json.offset[size - 1];
+    char c = fgetc(in);
+    fseek(in, 3, SEEK_CUR);
+    while (c != ' ') c = fgetc(in);
+    for (int i = 0; i < len; i++) {
+      char ch = fgetc(in);
+      json.data.add(ch);
     }
-    if (cur < size) {
-      json.data.add(json.str[cur]);
-      json.cur = cur + 1;
-    }
+    json.data.add('}');
+    json.data.add(',');
+    c = fgetc(in);
+    c = fgetc(in);
+    c = fgetc(in);
+cout << c << endl;
 }
 
 void tran::get_name(catalog *CATALOG, form &json) {
@@ -182,7 +195,6 @@ void tran::get_name(catalog *CATALOG, form &json) {
     for(int i = 0; i < size; i++) {
         char* n = CATALOG -> search_id(json.aid[i]);
         json.name.add(n);
-        n = NULL;
     }
 }
 

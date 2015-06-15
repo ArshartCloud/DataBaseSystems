@@ -26,20 +26,20 @@ int main(int argc, char *argv[]) {
     fclose(out);
 
     // Transform serial to json
-    // in = fopen("output", "rb");
-    // if (NULL == in) {
-    //     cout << "output open failed" << endl;
-    //     return 0;
-    // }
-    // out = fopen("input_.json", "w");
-    // if (NULL == out) {
-    //     cout << "input_.json open failed" << endl;
-    //     return 0;
-    // }
+     in = fopen("output", "rb");
+     if (NULL == in) {
+         cout << "output open failed" << endl;
+         return 0;
+     }
+     out = fopen("input_.json", "w");
+     if (NULL == out) {
+         cout << "in.json open failed" << endl;
+         return 0;
+     }
 
-    // print(in, out, &CATALOG);
-    // fclose(in);
-    // fclose(out);
+     print(in, out, &CATALOG);
+     fclose(in);
+     fclose(out);
 
     return 0;
 }

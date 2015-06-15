@@ -17,22 +17,16 @@ void print(FILE *in, FILE *out, catalog* CATALOG) {
     ch = fgetc(in);
     while(ch != ']') {
       form j2;
-      while(1) {
-        ch = fgetc(in);
-        if (ch == EOF || ch == '\n') break;
-        else j2.str.add(ch);
-      }
       tran a;
-      if (j2.str.getSize() > 10) {
-        a.write(in, out, CATALOG, j2);
-      }
+      a.write(in, out, CATALOG, j2);
      j2.data.vector_release();
+cout << "data clean\n";
      j2.aid.vector_release();
-        //int size = name.getSize();
-        //for (int i = 0; i < size; i++) name[i] = NULL;
+cout << "aid clean\n";
      j2.name.vector_release();
+cout << "name clean\n";
      j2.offset.vector_release();
-     j2.str.vector_release();
+cout << "offset clean\n";
      ch = fgetc(in);
      if (ch != ']') fprintf(out, ",\n");
      else fprintf(out, "\n");
