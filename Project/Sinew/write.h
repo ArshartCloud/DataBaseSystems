@@ -11,5 +11,4 @@ using namespace std;
 void write_tuple(FILE* fp, tuple* t);
 void write_file(FILE* in, FILE* out,catalog* CATALOG);
 
-
 #endif /* WRITE_H */
