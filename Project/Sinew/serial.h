@@ -34,7 +34,9 @@ void add_nested_arr(tuple *t, int id, my_string key_value);
 void add_nested_obj(tuple* t, int id, tuple* nested);
 // release memory of a tuple
 void tuple_release(tuple* t);
-// sort the key with aid using binary search
-tuple* sort_id(tuple* t);
+// get length of data through offset id .
+int getLenFromOffset(tuple* t, int offid);
+// cout t in json type;
+void print_tuple(tuple* t);
 
 #endif /* SERIAL_H */
