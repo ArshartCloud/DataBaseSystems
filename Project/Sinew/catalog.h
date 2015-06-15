@@ -45,6 +45,8 @@ public:
     void print_tuple(tuple* t);
     // sort the key with aid using binary sort
     tuple* sort_id(tuple* t);
+    char* search_id(int id);
+
 private:
     attribute* head;
     attribute* tail;

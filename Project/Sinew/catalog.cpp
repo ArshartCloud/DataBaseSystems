@@ -65,11 +65,11 @@ int binary_search(my_vector<int>& aid, int low, int high, int goal) {
     {
         middle = (low + high)/2;
         if(aid[middle] == goal)
-            return middle;
+        return middle;
         else if(aid[middle] > goal)
-            high = middle - 1;
+        high = middle - 1;
         else
-            low = middle + 1;
+        low = middle + 1;
     }
     return -1;
 }
@@ -85,7 +85,7 @@ int catalog::find_int(tuple* t, const int id, const int& key_value, bool& is_fin
                 ans = ans*10 + *(t->data.content() + t->offset[ind] + j) - '0';
             }
             if (ans == key_value) {
-                  is_find = true;
+                is_find = true;
             }
         }
         num++;
@@ -394,9 +394,6 @@ attribute* catalog::search(char* key_type, char* key_name) {
     return NULL;
 }
 
-<<<<<<< HEAD
-char* catalog::search_id(int id) {
-=======
 my_vector<tuple*>& catalog::getarr() {
     return arr;
 }
@@ -415,11 +412,11 @@ void catalog::print_tuple(tuple* t) {
         int len = getLenFromOffset(t, i);
         if (!strcmp(att->key_type, "int")) {
             for (int j = 0; j < len; j++)
-                cout << *(t->data.content() + t->offset[i] + j);
+            cout << *(t->data.content() + t->offset[i] + j);
         } else if (!strcmp(att->key_type, "text")) {
             cout << '"';
             for (int j = 0; j < len; j++)
-                cout << *(t->data.content() + t->offset[i] + j);
+            cout << *(t->data.content() + t->offset[i] + j);
             cout << '"';
         } else if (!strcmp(att->key_type, "bool")) {
             if (*(t->data.content() + t->offset[i]) == 'T') {
@@ -449,24 +446,12 @@ void catalog::print_tuple(tuple* t) {
 }
 
 attribute* catalog::search(int id) {
->>>>>>> c48313052b0bc42fd6f757b8e57e1aa5aae6502b
-   // you can use cur_point to make it better
+    // you can use cur_point to make it better
     attribute *cur = head->next;
     while (cur -> next != NULL) {
         if (cur -> _id == id) {
-<<<<<<< HEAD
-//	cout << cur -> key_name << endl;
-		return cur -> key_name;
-	}
-      //  cout << count << endl; 
-        cur = cur -> next;
-    }
-    cout << "not find id!\n";
-    return NULL;
-}
-=======
-        return cur;
-    }
+            return cur;
+        }
         cur = cur -> next;
     }
 //    cout << "not find id!\n";
@@ -475,44 +460,44 @@ attribute* catalog::search(int id) {
 
 void my_swap(int &x,int &y)
 {
-   int temp;
-   temp = x;
-   x = y;
-   y = temp;
+    int temp;
+    temp = x;
+    x = y;
+    y = temp;
 }
 
 int choose_pivot(int i,int j )
 {
-   return((i+j) /2);
+    return((i+j) /2);
 }
 
 void quicksort(my_vector<int> &v, int m, int n, my_vector<int> &od)
 {
-   int key,i,j,k;
-   if( m < n)
-   {
-      k = choose_pivot(m,n);
-      my_swap(v[m],v[k]);
-      my_swap(od[m], od[k]);
-      key = v[m];
-      i = m+1;
-      j = n;
-      while(i <= j)
-      {
-         while((i <= n) && (v[i] <= key))
-                i++;
-         while((j >= m) && (v[j] > key))
-                j--;
-         if( i < j) {
+    int key,i,j,k;
+    if( m < n)
+    {
+        k = choose_pivot(m,n);
+        my_swap(v[m],v[k]);
+        my_swap(od[m], od[k]);
+        key = v[m];
+        i = m+1;
+        j = n;
+        while(i <= j)
+        {
+            while((i <= n) && (v[i] <= key))
+            i++;
+            while((j >= m) && (v[j] > key))
+            j--;
+            if( i < j) {
                 my_swap(v[i],v[j]);
                 my_swap(od[i], od[j]);
             }
-      }
-      my_swap(v[m],v[j]);
-      my_swap(od[m], od[j]);
-      quicksort(v,m,j-1, od);
-      quicksort(v,j+1,n, od);
-   }
+        }
+        my_swap(v[m],v[j]);
+        my_swap(od[m], od[j]);
+        quicksort(v,m,j-1, od);
+        quicksort(v,j+1,n, od);
+    }
 }
 
 tuple* catalog::sort_id(tuple* t) {
@@ -535,8 +520,8 @@ tuple* catalog::sort_id(tuple* t) {
     length = t->offset.getSize();
     int len = 0;
     for (int i = 0; i < length; i++) {
-      nt->offset.add(len);
-      len += getLenFromOffset(t, ori_order[i]);
+        nt->offset.add(len);
+        len += getLenFromOffset(t, ori_order[i]);
     }
     //for debug if (t->len != len)
     nt->len = len;
@@ -544,19 +529,19 @@ tuple* catalog::sort_id(tuple* t) {
     my_vector<int> Caid; //aid of child
     length = t->key_num;
     for (int i = 0; i < length; i++) {
-      int len = getLenFromOffset(t, ori_order[i]);
-      if (len == 0) {
-        attribute* att = search(t->aid[ori_order[i]]);
-        assert(att != NULL);
-        if (!strcmp(att->key_type, "nested_obj")) {
-            Caid.add(ori_order[i]);
-            continue;
+        int len = getLenFromOffset(t, ori_order[i]);
+        if (len == 0) {
+            attribute* att = search(t->aid[ori_order[i]]);
+            assert(att != NULL);
+            if (!strcmp(att->key_type, "nested_obj")) {
+                Caid.add(ori_order[i]);
+                continue;
+            }
         }
-      }
-      char src[len+1];
-      strncpy(src, t->data.content() + t->offset[ori_order[i]], len);
-      src[len] = '\0';
-      nt->data = nt->data + src;
+        char src[len+1];
+        strncpy(src, t->data.content() + t->offset[ori_order[i]], len);
+        src[len] = '\0';
+        nt->data = nt->data + src;
     }
     //creat child
     nt->child_num = t->child_num;
@@ -566,10 +551,10 @@ tuple* catalog::sort_id(tuple* t) {
     for (int i = 0; i < length; i++) Cod.add(i);
     quicksort(Caid, 0, length-1, Cod);
     for (int i = 0; i < length; i++) {
-      tuple* nct = sort_id(t->child[Cod[i]]); // child will be release here
-      nt->child.add(nct);
+        tuple* nct = sort_id(t->child[Cod[i]]); // child will be release here
+        nt->child.add(nct);
     }
-    
+
     // don't release child, since children were release below
     if (t != NULL) {
         t->aid.vector_release();
@@ -582,4 +567,15 @@ tuple* catalog::sort_id(tuple* t) {
     Caid.vector_release();
     return nt;
 }
->>>>>>> c48313052b0bc42fd6f757b8e57e1aa5aae6502b
+
+char* catalog::search_id(int id) {
+    // you can use cur_point to make it better
+    attribute *cur = head->next;
+    while (cur -> next != NULL) {
+        if (cur -> _id == id) {
+            return cur -> key_name;
+        }
+        cur = cur -> next;
+    }
+    return NULL;
+}

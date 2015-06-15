@@ -133,3 +133,21 @@ tuple* read_tuple(FILE* fp, catalog* CATALOG) {
     t = CATALOG->sort_id(t);
     return t;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
