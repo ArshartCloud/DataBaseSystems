@@ -281,48 +281,48 @@ char* catalog::search_id(int id) {
 
 
 void catalog::Find() {
-    my_string key_name;
-    char b[MAXN];
+    char key_name[MAXN];
+    char key_value[MAXN];
     cout << "input key_name"<<endl;
     cin >> key_name;
     cout << "input key_value"<<endl;
     getchar();
-    fgets(b, MAXN, stdin);
-    b[strlen(b)-1] = '\0'; //fgets will get \n;
-    my_string key_value(b);
-    if (key_value.content()[0] == '"') {
-        int size = key_value.size();
-        if (key_value.content()[size-1] != '"') {
+    fgets(key_value, MAXN, stdin);
+    key_value[strlen(key_value)-1] = '\0'; //fgets will get \n;
+
+    if (key_value[0] == '"') {
+        int size = strlen(key_value);
+        if (key_value[size-1] != '"') {
             cout << "input error!!!" << endl;
             return;
         }
         char str[size - 1];
         for (int i = 0; i < size - 2; i++) {
-            str[i] = key_value.content()[i+1];
+            str[i] = key_value[i+1];
         }
         str[size - 2] = '\0';
-        find(key_name.content(), str);
-    } else if (!strcmp(key_value.content(), "true")) {
-        find(key_name.content(), true);
-    } else if (!strcmp(key_value.content(), "false")) {
-        find(key_name.content(), false);
-    } else if (key_value.content()[0] >= '0' && key_value.content()[0] <= '9') {
+        find(key_name, str);
+    } else if (!strcmp(key_value, "true")) {
+        find(key_name, true);
+    } else if (!strcmp(key_value, "false")) {
+        find(key_name, false);
+    } else if (key_value[0] >= '0' && key_value[0] <= '9') {
         int num = 0;
-        int size = key_value.size();
+        int size = strlen(key_value);
         for (int i = 0; i < size; i++) {
-            num = num*10 + key_value.content()[i] - '0';
+            num = num*10 + key_value[i] - '0';
         }
-        find(key_name.content(), num);
-    } else if (key_value.content()[0] == '[') {
-        int size = key_value.size();
-        if (key_value.content()[size-1] != ']') {
+        find(key_name, num);
+    } else if (key_value[0] == '[') {
+        int size = strlen(key_value);
+        if (key_value[size-1] != ']') {
             cout << "input error!!!" << endl;
             return;
         }
         my_vector<my_string> v;
         int i = 1, ok = 1;
         while (i < size - 1) {
-            if(key_value.content()[i] != '"') {
+            if(key_value[i] != '"') {
                 cout << "input error!!!" << endl;
                 ok = 0;
                 break;
@@ -330,8 +330,8 @@ void catalog::Find() {
             i++;//'"'
             char str2[size];
             int cur = 0;
-            while (i < size - 1 && key_value.content()[i] != '"') {
-                str2[cur] = key_value.content()[i];
+            while (i < size - 1 && key_value[i] != '"') {
+                str2[cur] = key_value[i];
                 i++, cur++;
             }
             str2[cur] = '\0';
@@ -343,7 +343,7 @@ void catalog::Find() {
                 my_string str(str2);
                 v.add(str);
                 i++;//'"';
-                if (key_value.content()[i] != ',' && i != size - 1) {
+                if (key_value[i] != ',' && i != size - 1) {
                     cout << "input error!!!" << endl;
                     ok = 0;
                     break;
@@ -353,7 +353,7 @@ void catalog::Find() {
             }
         }
         if (ok)
-            find(key_name.content(), v);
+            find(key_name, v);
         v.vector_release();
     } else {
         cout << "input error!!!"<<endl;
@@ -408,6 +408,7 @@ void catalog::find(char* key_name, const int& key_value) {
         return;
     }
     int size = arr.getSize();
+    int tot = 0;
     int getnum = 0;
     int first = 1;
     bool is_ok = false;
@@ -417,6 +418,7 @@ void catalog::find(char* key_name, const int& key_value) {
         getnum += del;
         if (is_find) {
             is_ok = true;
+            tot++;
             if (first) first = 0;
             else cout << ",\n";
             print_tuple(arr[i]);
@@ -425,7 +427,7 @@ void catalog::find(char* key_name, const int& key_value) {
     }
     if (!is_ok) {
         cout<< "NONE";
-    }
+    } else cout << endl << "Totol: " << tot;
     cout << endl;
     return;
 }
@@ -458,6 +460,7 @@ void catalog::find(char* key_name, const char* key_value) {
         return;
     }
     int size = arr.getSize();
+    int tot = 0;
     int getnum = 0;
     int first = 1;
     bool is_ok = false;
@@ -467,6 +470,7 @@ void catalog::find(char* key_name, const char* key_value) {
         getnum += del;
         if (is_find) {
             is_ok = true;
+            tot++;
             if (first) first = 0;
             else cout << ",\n";
             print_tuple(arr[i]);
@@ -475,7 +479,7 @@ void catalog::find(char* key_name, const char* key_value) {
     }
     if (!is_ok) {
         cout<< "NONE";
-    }
+    } else cout << endl << "Total: " << tot;
     cout << endl;
     return;
 }
@@ -512,6 +516,7 @@ void catalog::find(char* key_name, const bool& key_value) {
         return;
     }
     int size = arr.getSize();
+    int tot = 0;
     int getnum = 0;
     int first = 1;
     bool is_ok = false;
@@ -521,6 +526,7 @@ void catalog::find(char* key_name, const bool& key_value) {
         getnum += del;
         if (is_find) {
             is_ok = true;
+            tot++;
             if (first) first = 0;
             else cout << ",\n";
             print_tuple(arr[i]);
@@ -529,7 +535,7 @@ void catalog::find(char* key_name, const bool& key_value) {
     }
     if (!is_ok) {
         cout<< "NONE";
-    }
+    } else cout << endl << "Total: " << tot;
     cout << endl;
     return;
 }
@@ -577,6 +583,7 @@ void catalog::find(char* key_name, my_vector<my_string>& key_value) {
         return;
     }
     int size = arr.getSize();
+    int tot = 0;
     int getnum = 0;
     int first = 1;
     bool is_ok = false;
@@ -586,6 +593,7 @@ void catalog::find(char* key_name, my_vector<my_string>& key_value) {
         getnum += del;
         if (is_find) {
             is_ok = true;
+            tot++;
             if (first) first = 0;
             else cout << ",\n";
             print_tuple(arr[i]);
@@ -594,7 +602,7 @@ void catalog::find(char* key_name, my_vector<my_string>& key_value) {
     }
     if (!is_ok) {
         cout<< "NONE";
-    }
+    } else cout << endl << "Total: " << endl;
     cout << endl;
     return;
 }
@@ -637,6 +645,7 @@ void catalog::find(char* key_name, tuple& key_value) {
         return;
     }
     int size = arr.getSize();
+    int tot = 0;
     int getnum = 0;
     int first = 1;
     bool is_ok = false;
@@ -646,6 +655,7 @@ void catalog::find(char* key_name, tuple& key_value) {
         getnum += del;
         if (is_find) {
             is_ok = true;
+            tot++;
             if (first) first = 0;
             else cout << ",\n";
             print_tuple(arr[i]);
@@ -654,7 +664,7 @@ void catalog::find(char* key_name, tuple& key_value) {
     }
     if (!is_ok) {
         cout<< "NONE";
-    }
+    } else cout << endl << "Total: " << tot;
     cout << endl;
     return;
 }
