@@ -28,9 +28,9 @@ public:
     void get_offset(FILE *in, form &json);
     void get_data(FILE *in, form &json);
     void get_name(catalog * CATALOG, form &json);
-    void write_arr(FILE *out, form json, int&k, int &z);
-    void write_bool(FILE *out, form json, int &k);
-    void write_text(FILE *out, form json, int&k, int &z);
+    void write_arr(FILE *out, form &json, int&k, int &z);
+    void write_bool(FILE *out, form &json, int &k);
+    void write_text(FILE *out, form &json, int&k, int &z);
 };
 
 //void print(FILE *in, FILE *out, catalog* CATALOG) {}
