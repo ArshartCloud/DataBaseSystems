@@ -287,13 +287,14 @@ void catalog::Find() {
     cin >> key_name;
     cout << "input key_value"<<endl;
     getchar();
-    gets(b);
+    fgets(b, MAXN, stdin);
+    b[strlen(b)-1] = '\0'; //fgets will get \n;
     my_string key_value(b);
     if (key_value.content()[0] == '"') {
         int size = key_value.size();
         if (key_value.content()[size-1] != '"') {
-            cout << "wrong input !!!" << endl;
-            //continue;
+            cout << "input error!!!" << endl;
+            return;
         }
         char str[size - 1];
         for (int i = 0; i < size - 2; i++) {
@@ -315,14 +316,14 @@ void catalog::Find() {
     } else if (key_value.content()[0] == '[') {
         int size = key_value.size();
         if (key_value.content()[size-1] != ']') {
-            cout << "wrong input !!!" << endl;
-            //continue;
+            cout << "input error!!!" << endl;
+            return;
         }
         my_vector<my_string> v;
         int i = 1, ok = 1;
         while (i < size - 1) {
             if(key_value.content()[i] != '"') {
-                cout << "wrong input !!!" << endl;
+                cout << "input error!!!" << endl;
                 ok = 0;
                 break;
             }
@@ -335,15 +336,16 @@ void catalog::Find() {
             }
             str2[cur] = '\0';
             if (i >= size - 1) {
-                cout << "wrong input !!!" << endl;
+                cout << "input error!!!" << endl;
                 ok = 0;
+                break;
             } else {
                 my_string str(str2);
                 v.add(str);
                 i++;//'"';
                 if (key_value.content()[i] != ',' && i != size - 1) {
-                    cout << "wrong input !!!" << endl;
-                    cout << key_value.content()[i] <<endl;
+                    cout << "input error!!!" << endl;
+                    ok = 0;
                     break;
                 }
                 i++;//',' and ' ';
