@@ -301,9 +301,9 @@ void catalog::Find() {
         }
         str[size - 2] = '\0';
         find(key_name.content(), str);
-    } else if (!strcmp(key_name.content(), "true")) {
+    } else if (!strcmp(key_value.content(), "true")) {
         find(key_name.content(), true);
-    } else if (!strcmp(key_name.content(), "false")) {
+    } else if (!strcmp(key_value.content(), "false")) {
         find(key_name.content(), false);
     } else if (key_value.content()[0] >= '0' && key_value.content()[0] <= '9') {
         int num = 0;
@@ -320,7 +320,7 @@ void catalog::Find() {
         }
         my_vector<my_string> v;
         int i = 1, ok = 1;
-        while (i < size) {
+        while (i < size - 1) {
             if(key_value.content()[i] != '"') {
                 cout << "wrong input !!!" << endl;
                 ok = 0;
@@ -329,12 +329,12 @@ void catalog::Find() {
             i++;//'"'
             char str2[size];
             int cur = 0;
-            while (i < size && key_value.content()[i] != '"') {
+            while (i < size - 1 && key_value.content()[i] != '"') {
                 str2[cur] = key_value.content()[i];
                 i++, cur++;
             }
             str2[cur] = '\0';
-            if (i >= size) {
+            if (i >= size - 1) {
                 cout << "wrong input !!!" << endl;
                 ok = 0;
             } else {
