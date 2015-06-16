@@ -135,29 +135,30 @@ xStr transLine(char * start, char * end) {
 			temp[i++] = *t;
 			t++;
 		}
-		
+
 		if (arriveData) {
 			// translate data field
 			int number = 0;
 			for (int l = 0; l < sepCount - 1; l++) {
-				if (sep[l+1] > sep[l])
-				if (isNum(t + sep[l], t + sep[l+1])) {
-					number = str2int(t + sep[l], t + sep[l+1]); // trans to int, add to temp
-					ic = (char*) &number;
-					for (int k = 0; k < 4; k++) {
-						temp[i++] = ic[k];
-					}
-				} else {  // not number, add to temp
-					my_strcpy(&temp[i], t + sep[l], sep[l+1] - sep[l]);
-					i = i + sep[l+1] - sep[l];
-				}
+				if (sep[l+1] > sep[l]) {
+                    if (isNum(t + sep[l], t + sep[l+1])) {
+                        number = str2int(t + sep[l], t + sep[l+1]); // trans to int, add to temp
+                        ic = (char*) &number;
+                        for (int k = 0; k < 4; k++) {
+                            temp[i++] = ic[k];
+                        }
+                    } else {  // not number, add to temp
+                        my_strcpy(&temp[i], t + sep[l], sep[l+1] - sep[l]);
+                        i = i + sep[l+1] - sep[l];
+                    }
+                }
 			}
 			// add t, t += len
 			t += sep[sepCount - 1]; // t point to }
 			arriveData = false;   // end of data field
 		}
 	}
-	
+
 
 
 	xStr result(i, temp);  // need to delete []result.content
@@ -236,10 +237,8 @@ int getIntLen(char * start) {
 		temp = -temp;
 		neg = true;
 	}
-	char num[15];
 	int len = 0;
 	while (temp != 0) {
-		num[len++] = temp % 10;
 		temp /= 10;
 	}
 	if (neg) len++;
@@ -261,19 +260,21 @@ char* require(int n) {
 
 	// find the first completed record
 	// if the head record is splited, delete it
-	char * index = my_find_subStr(buffer, "{count: ", bufferSize, 8);  // assume can find
+    char s1[] = "{count: ";
+	char * index = my_find_subStr(buffer, s1, bufferSize, 8);  // assume can find
 	while (*(index - 1) == ' ') {
-		index = my_find_subStr(index + 1, "{count: ", bufferSize - (index - buffer), 8);  // assume can find
+		index = my_find_subStr(index + 1, s1, bufferSize - (index - buffer), 8);  // assume can find
 	}
 	bufferSize = bufferSize - (index - buffer);
 	my_strcpy(buffer, index, bufferSize);  // compact to left
 
 	// if tail record is splited into 2 page, read next page, add the addtional str of last record
-	if (buffer[bufferSize - 3] != '}' && buffer[bufferSize - 2] != ',' && buffer[bufferSize - 1] != '\n') {  
+	if (buffer[bufferSize - 3] != '}' && buffer[bufferSize - 2] != ',' && buffer[bufferSize - 1] != '\n') {
 		// if the tail of buffer != "},\n"
 		realLen = fread(buffer + bufferSize, sizeof(char), PAGE_SIZE, dataFile);
 		bufferSize += realLen;
-		index = my_find_subStr(buffer + PAGE_SIZE - 2, "},\n", PAGE_SIZE + 2, 3);
+        char s2[] = "},\n";
+		index = my_find_subStr(buffer + PAGE_SIZE - 2, s2, PAGE_SIZE + 2, 3);
 		bufferSize = index - buffer + 3;
 	}
 	else if (buffer[bufferSize - 3] != '\n' && buffer[bufferSize - 2] != ']' && buffer[bufferSize - 1] != '\n') {
@@ -285,11 +286,9 @@ char* require(int n) {
 	char * result = new char[PAGE_SIZE * 2];
 	// translate int to char
 	index = buffer;
-	char * temp = NULL;
 	int sep[100], sepCount = 0, resultLength = 0, intlen;
 	bool issep = false;
 	while(index < (buffer + bufferSize)) {
-		
 		if (*index == '{' && *(index + 1) == 'c' && *(index + 2) == 'o') {  // new (sub) rocord line, initial
 			sepCount = 0;
 			issep = false;
