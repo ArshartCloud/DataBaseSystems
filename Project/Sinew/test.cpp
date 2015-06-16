@@ -8,6 +8,8 @@ using namespace std;
 int main(int argc, char *argv[]) {
     FILE* in;
     FILE* out;
+    page_r Read;
+    page_w Write;
     // Transform json to serial
     in = fopen("input.json", "r");
     if (NULL == in) {
@@ -23,7 +25,10 @@ int main(int argc, char *argv[]) {
     catalog CATALOG;
     write_file(in, out, &CATALOG);
     fclose(in);
+    Write.flush(out);
     fclose(out);
+    Read.reset();
+    Write.reset();
 
     // Transform serial to json
     in = fopen("output", "rb");
@@ -39,6 +44,7 @@ int main(int argc, char *argv[]) {
 
     print(in, out, &CATALOG);
     fclose(in);
+    Write.flush(out);
     fclose(out);
 
     return 0;

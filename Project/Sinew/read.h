@@ -5,6 +5,7 @@
 #include "serial.h"
 #include "catalog.h"
 #include "my_string.h"
+#include "page_rw.h"
 
 // delimeter for nested_arr
 const char delimeter = '|';

@@ -1,27 +1,30 @@
 #include <iostream>
 #include "change_back_to_json.h"
 #include "print.h"
+#include "page_rw.h"
 using namespace std;
 
 int tran::add_num(FILE *in, form &json) {
+    page_r Read;
     int x = 0;
-    char ch = fgetc(in);
+    char ch = Read.my_fgetc(in);
     while (ch != ',') {
-        ch = fgetc(in);
+        ch = Read.my_fgetc(in);
         if (ch == ',') {
-            ch = fgetc(in);
+            ch = Read.my_fgetc(in);
             if (ch == ' ')
             ch = ',';
         }
     }
-    fseek(in, -6, SEEK_CUR);
-    fread(&x, sizeof(int), 1, in);
+    Read.my_fseek(in, -6, SEEK_CUR);
+    Read.my_fread(&x, sizeof(int), 1, in);
     return x;
 }
 
 void tran::read_detail(FILE *in, catalog* CATALOG, form &json) {
-    fseek(in, 3, SEEK_CUR);
-    fgetc(in);
+    page_r Read;
+    Read.my_fseek(in, 3, SEEK_CUR);
+    Read.my_fgetc(in);
     json.count = add_num(in, json);  // get count
     get_aid(in, json);
     get_offset(in, json);
@@ -129,51 +132,54 @@ void tran::write_arr(FILE *out, form json, int &k, int &z) {
 }
 
 void tran::get_aid(FILE *in, form &json) {
+    page_r Read;
     for (int i = 0; i < json.count; i++) {
-        char c = fgetc(in);
+        char c = Read.my_fgetc(in);
         while (c != ' ') {
-            c = fgetc(in);
+            c = Read.my_fgetc(in);
         }
-        c = fgetc(in);
+        c = Read.my_fgetc(in);
         int x = add_num(in, json);
         json.aid.add(x);
     }
 }
 
 void tran::get_offset(FILE *in, form &json) {
+    page_r Read;
     for (int i = 0; i < json.count; i++) {
-        char c = fgetc(in);
+        char c = Read.my_fgetc(in);
         while (c != ' ') {
-            c = fgetc(in);
+            c = Read.my_fgetc(in);
         }
-        c = fgetc(in);
+        c = Read.my_fgetc(in);
         int x = add_num(in, json);
         json.offset.add(x);
     }
-    char c = fgetc(in);
+    char c = Read.my_fgetc(in);
     while (c != ' ') {
-        c = fgetc(in);
+        c = Read.my_fgetc(in);
     }
-    c = fgetc(in);
+    c = Read.my_fgetc(in);
     int x = add_num(in, json);
     json.offset.add(x);
 }
 
 void tran::get_data(FILE *in, form &json) {
+    page_r Read;
     int size = json.offset.getSize();
     int len = json.offset[size - 1];
-    char c = fgetc(in);
-    fseek(in, 3, SEEK_CUR);
-    while (c != ' ') c = fgetc(in);
+    char c = Read.my_fgetc(in);
+    Read.my_fseek(in, 3, SEEK_CUR);
+    while (c != ' ') c = Read.my_fgetc(in);
     for (int i = 0; i < len; i++) {
-        char ch = fgetc(in);
+        char ch = Read.my_fgetc(in);
         json.data.add(ch);
     }
     json.data.add('}');
     json.data.add(',');
-    c = fgetc(in);
-    c = fgetc(in);
-    c = fgetc(in);
+    c = Read.my_fgetc(in);
+    c = Read.my_fgetc(in);
+    c = Read.my_fgetc(in);
 }
 
 void tran::get_name(catalog *CATALOG, form &json) {

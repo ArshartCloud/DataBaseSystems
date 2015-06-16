@@ -5,6 +5,7 @@
 #include "catalog.h"
 #include <cstdio>
 #include <cstring>
+#include "page_rw.h"
 using namespace std;
 
 struct form {

@@ -6,6 +6,7 @@
 #include "read.h"
 #include "serial.h"
 #include "my_vector.cpp"
+#include "page_rw.h"
 using namespace std;
 
 void write_tuple(FILE* fp, tuple* t);
