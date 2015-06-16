@@ -58,6 +58,10 @@ void tran::write(FILE *in, FILE *out, catalog *CATALOG, form &json) {
             //char s1[] = ", ";
             //fwrite(s1, sizeof(s1), 1, out);
             fprintf(out, ", ");
+            j1.data.vector_release();
+            j1.aid.vector_release();
+            j1.name.vector_release();
+            j1.offset.vector_release();
         }
         else if(json.data[k] == 'T' || json.data[k] == 'F'){ // bool 类型的数
             write_bool(out, json, k);
@@ -68,12 +72,12 @@ void tran::write(FILE *in, FILE *out, catalog *CATALOG, form &json) {
     fprintf(out, "}");
 }
 
-void tran::write_bool(FILE *out, form json, int &k) {
+void tran::write_bool(FILE *out, form &json, int &k) {
     if (json.data[k] == 'T') fprintf(out, "true, "); // 因为bool 类型偏移值只可能为1，要么是T，或者是F，所以就取巧了
     else fprintf(out, "false, ");
 }
 
-void tran::write_text(FILE *out, form json, int &k, int &z) {
+void tran::write_text(FILE *out, form &json, int &k, int &z) {
     int off = json.offset[z + 1] - json.offset[z];
     if (json.data[k] >= '0' && json.data[k] <= '9') {
         for (int j = 0; j < off; j++) {
@@ -89,7 +93,7 @@ void tran::write_text(FILE *out, form json, int &k, int &z) {
 	if (z < json.aid.getSize() - 1) fprintf(out, ", ");
 }
 
-void tran::write_arr(FILE *out, form json, int &k, int &z) {
+void tran::write_arr(FILE *out, form &json, int &k, int &z) {
     int off = json.offset[z + 1] - json.offset[z], cal_num = 0;
     my_vector<char> nest[50];
     if (off == 0) {
