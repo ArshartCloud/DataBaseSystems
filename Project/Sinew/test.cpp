@@ -32,8 +32,6 @@ int main(int argc, char *argv[]) {
     Read.reset();
     Write.reset();
 
-
-
     // Transform serial to json
     in = fopen("output", "rb");
     if (NULL == in) {

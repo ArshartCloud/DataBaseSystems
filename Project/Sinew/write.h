@@ -9,7 +9,8 @@
 #include "page_rw.h"
 using namespace std;
 
-void write_tuple(FILE* fp, tuple* t);
+// in as json input, out as serial output, indexed by CATALOG
 void write_file(FILE* in, FILE* out,catalog* CATALOG);
+void write_tuple(FILE* fp, tuple* t);
 
 #endif /* WRITE_H */
