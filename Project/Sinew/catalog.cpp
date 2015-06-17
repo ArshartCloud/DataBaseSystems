@@ -297,8 +297,28 @@ void catalog::Find() {
             return;
         }
         char str[size - 1];
-        for (int i = 0; i < size - 2; i++) {
-            str[i] = key_value[i+1];
+        int cur = 0;
+        for (int i = 1; i < size - 1; i++, cur++) {
+            if (key_value[i] ==  '"') {
+                cout << "input error!!!" << endl;
+                return;
+            }
+            if (key_value[i] != '\\') {
+                str[cur] = key_value[i];
+            } else {
+                i++;
+                if (i >= size - 1) {
+                    cout << "input error!!!" << endl;
+                    return;
+                } else if (key_value[i] == '"') {
+                    str[cur] = key_value[i];
+                } else if (key_value[i] == '\\'){
+                    str[cur] = key_value[i];
+                } else {
+                    cout << "input error!!!" << endl;
+                    return;
+                }
+            }
         }
         str[size - 2] = '\0';
         find(key_name, str);
@@ -310,7 +330,12 @@ void catalog::Find() {
         int num = 0;
         int size = strlen(key_value);
         for (int i = 0; i < size; i++) {
-            num = num*10 + key_value[i] - '0';
+            if (key_value[i] >= '0' && key_value[i] <= '9') {
+               num = num*10 + key_value[i] - '0';
+            } else {
+                cout << "input error!!!" << endl;
+                return;
+            }
         }
         find(key_name, num);
     } else if (key_value[0] == '[') {
@@ -331,9 +356,27 @@ void catalog::Find() {
             char str2[size];
             int cur = 0;
             while (i < size - 1 && key_value[i] != '"') {
-                str2[cur] = key_value[i];
+                if (key_value[i] != '\\') {
+                    str2[cur] = key_value[i];
+                } else {
+                    i++;
+                    if (i >= size - 1) {
+                        cout << "input error!!!" << endl;
+                        ok = 0;
+                        break;
+                    } else if (key_value[i] == '"') {
+                        str2[cur] = key_value[i];
+                    } else if (key_value[i] == '\\'){
+                        str2[cur] = key_value[i];
+                    } else {
+                        cout << "input error!!!" << endl;
+                        ok = 0;
+                        break;
+                    }
+                }
                 i++, cur++;
             }
+            if (!ok) break;
             str2[cur] = '\0';
             if (i >= size - 1) {
                 cout << "input error!!!" << endl;
@@ -343,13 +386,19 @@ void catalog::Find() {
                 my_string str(str2);
                 v.add(str);
                 i++;//'"';
-                if (key_value[i] != ',' && i != size - 1) {
+                if (i == size-1) break;  // normal finish with ']'
+                if (key_value[i] != ',') {
                     cout << "input error!!!" << endl;
                     ok = 0;
                     break;
                 }
-                i++;//',' and ' ';
-                i++;
+                i++;//',';
+                if (i >= size - 1 || key_value[i] != ' ') {
+                    cout << "input error!!!" << endl;
+                    ok = 0;
+                    break;
+                }
+                i++;//' ';
             }
         }
         if (ok)
