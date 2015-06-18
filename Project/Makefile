@@ -8,7 +8,7 @@ CFLAGS = -Wall -g
 TARGET = main
 
 BIN_TARGET = $(DIR_BIN)/$(TARGET)
-SRC = $(wildcard $(DIR_SRC)/%.c $(DIR_SRC)/%.cpp)
+SRC = $(wildcard $(DIR_SRC)/%.c $(DIR_SRC)/*.cpp)
 OBJ = $(patsubst $(DIR_SRC)/%.cpp, $(DIR_OBJ)/%.o, \
 		$(patsubst $(DIR_SRC)/%.c, $(DIR_OBJ)/%.o, $(SRC)))
 
