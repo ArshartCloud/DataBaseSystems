@@ -80,6 +80,22 @@ my_string my_string::operator+(const char* src) {
     return newStr;
 }
 
+bool my_string::operator==(const my_string& src) {
+    if (strcmp(this->str, src.str) == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool my_string::operator==(const char* src) {
+    if (strcmp(this->str, src) == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 char* my_string::content(void) {
     return str;
 }

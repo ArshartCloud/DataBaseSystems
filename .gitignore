@@ -3,7 +3,8 @@ HomeWork1/
 test
 input_.json
 output
-
+nobench/
+nltk-develop/
 GPATH
 GRTAGS
 GSYMS

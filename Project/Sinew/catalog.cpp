@@ -1,8 +1,8 @@
-#include "catalog.h"
-#include "read.h"
 #include <iostream>
 #include <iomanip>
 #include <cstring>
+#include "catalog.h"
+#include "read.h"
 using namespace std;
 
 const int padding = 20;
@@ -41,15 +41,20 @@ catalog::~catalog(void) {
 void catalog::print(void) {
     // heading
     cout << setfill(' ') << left
-         << setw(padding) << "_id"
-         << setw(padding) << "Key_name"
-         << setw(padding) << "Key_type"
+         << setw(5) << ""
+         << setw(padding) << "_id        |"
+         << setw(padding) << "Key_name      |"
+         << setw(padding) << "Key_type      |"
          << setw(padding) << "count"
          << endl;
+
+    cout << setfill('-') << setw(80) << "" << endl;
+    cout << setfill(' ');
     // key records
     attribute* cur = head->next;
     for (int i = 0; i < count; i++) {
-        cout << setw(padding) << cur->_id
+        cout << setw(5) << ""
+             << setw(padding) << cur->_id
              << setw(padding) << cur->key_name
              << setw(padding) << cur->key_type
              << setw(padding) << cur->count
@@ -283,9 +288,9 @@ char* catalog::search_id(int id) {
 void catalog::Find() {
     char key_name[MAXN];
     char key_value[MAXN];
-    cout << "input key_name"<<endl;
-    cin >> key_name;
-    cout << "input key_value"<<endl;
+    scanf("%s", key_name);
+    getchar();
+    getchar();
     getchar();
     fgets(key_value, MAXN, stdin);
     key_value[strlen(key_value)-1] = '\0'; //fgets will get \n;
@@ -421,13 +426,14 @@ void catalog::find(char* key_name, const int& key_value) {
             tot++;
             if (first) first = 0;
             else cout << ",\n";
+            cout << tot << "    ";
             print_tuple(arr[i]);
         }
         if (getnum >= att->count) break;
     }
     if (!is_ok) {
         cout<< "NONE";
-    } else cout << endl << "Totol: " << tot;
+    } else cout << endl << endl << "Totol : " << tot;
     cout << endl;
     return;
 }
@@ -471,15 +477,21 @@ void catalog::find(char* key_name, const char* key_value) {
         if (is_find) {
             is_ok = true;
             tot++;
-            if (first) first = 0;
-            else cout << ",\n";
+            if (first) {
+                first = 0;
+            } else {
+                cout << ",\n";
+            }
+            cout << tot << "    ";
             print_tuple(arr[i]);
         }
         if (getnum >= att->count) break;
     }
     if (!is_ok) {
         cout<< "NONE";
-    } else cout << endl << "Total: " << tot;
+    } else {
+        cout << endl << endl << "Total : " << tot;
+    }
     cout << endl;
     return;
 }
@@ -529,13 +541,14 @@ void catalog::find(char* key_name, const bool& key_value) {
             tot++;
             if (first) first = 0;
             else cout << ",\n";
+            cout << tot << "    ";
             print_tuple(arr[i]);
         }
         if (getnum >= att->count) break;
     }
     if (!is_ok) {
         cout<< "NONE";
-    } else cout << endl << "Total: " << tot;
+    } else cout << endl << endl << "Total : " << tot;
     cout << endl;
     return;
 }
@@ -596,13 +609,14 @@ void catalog::find(char* key_name, my_vector<my_string>& key_value) {
             tot++;
             if (first) first = 0;
             else cout << ",\n";
+            cout << tot << "    ";
             print_tuple(arr[i]);
         }
         if (getnum >= att->count) break;
     }
     if (!is_ok) {
         cout<< "NONE";
-    } else cout << endl << "Total: " << endl;
+    } else cout << endl << endl << "Total : " << tot << endl;
     cout << endl;
     return;
 }
@@ -658,13 +672,14 @@ void catalog::find(char* key_name, tuple& key_value) {
             tot++;
             if (first) first = 0;
             else cout << ",\n";
+            cout << tot << "      ";
             print_tuple(arr[i]);
         }
         if (getnum >= att->count) break;
     }
     if (!is_ok) {
         cout<< "NONE";
-    } else cout << endl << "Total: " << tot;
+    } else cout << endl << endl<< "Total : " << tot;
     cout << endl;
     return;
 }

@@ -2,7 +2,7 @@ CC = gcc
 XX = g++
 CFLAGS = -Wall -g
 
-TARGET = test
+TARGET = main
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
