@@ -415,8 +415,18 @@ void catalog::Find() {
 }
 
 
+int order_search(my_vector<int>& aid, int low, int high, int goal) {
+    for (int i = low; i <= high; i++) {
+        if (aid[i] == goal) return i;
+    }
+    return -1;
+}
+
 //return index of id from left to right
 int binary_search(my_vector<int>& aid, int low, int high, int goal) {
+    #ifdef ORDER_SEARCH
+        return order_search(aid, low, high, goal);
+    #endif
     int middle = (low + high)/2;
     while(low <= high)
     {
