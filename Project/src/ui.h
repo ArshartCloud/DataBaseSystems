@@ -30,7 +30,7 @@ using namespace std;
 #define HIDE                 "\e[8m"
 #define CLEAR                "\e[2J"
 
-#define ORDER_SEARCH
+//#define ORDER_SEARCH
 
 void print_padding(int p, char c);
 
